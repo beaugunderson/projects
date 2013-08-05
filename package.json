@@ -1,0 +1,38 @@
+{
+  "name": "projects",
+  "version": "0.0.0",
+  "description": "You're a prolific developer (or you want to be). Keep track of and show off your projects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "bin": {
+    "projects": "./projects.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/beaugunderson/projects.git"
+  },
+  "keywords": [
+    "projects",
+    "organization"
+  ],
+  "author": "Beau Gunderson <beau@beaugunderson.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/beaugunderson/projects/issues"
+  },
+  "dependencies": {
+    "request": "~2.25.0",
+    "lodash": "~1.3.1",
+    "async": "~0.2.9",
+    "commander": "~2.0.0",
+    "pkginfo": "~0.3.0",
+    "moment": "~2.1.0",
+    "chalk": "~0.2.0"
+  },
+  "devDependencies": {
+    "chai": "~1.7.2",
+    "mocha": "~1.12.0"
+  }
+}
