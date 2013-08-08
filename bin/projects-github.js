@@ -1,8 +1,16 @@
+#!/usr/bin/env node
+
+exports.command = {
+  description: 'fill your .projects with your GitHub repositories'
+};
+
 var async = require('async');
 var moment = require('moment');
 var program = require('commander');
 var request = require('request');
 var _ = require('lodash');
+
+var projectsFile = require('../lib/projectsFile.js');
 
 var ATTRIBUTES = [
   'name',
@@ -28,7 +36,7 @@ var GITHUB_URL_MAPPINGS = {
 
 var SIX_MONTHS_AGO = moment().subtract('months', 6);
 
-var getRepositories = exports.getRepositories = function (cb) {
+var getRepositories = exports.getRepositories = function (username, cb) {
   var count;
   var page = 0;
 
@@ -41,7 +49,7 @@ var getRepositories = exports.getRepositories = function (cb) {
     page++;
 
     request.get({
-      url: "https://api.github.com/users/beaugunderson/repos",
+      url: 'https://api.github.com/users/' + username + '/repos',
       json: true,
       qs: {
         page: page
@@ -71,8 +79,8 @@ function isActive(repository) {
     (pushed && pushed.isAfter(SIX_MONTHS_AGO));
 }
 
-exports.fillProjects = function (cb) {
-  getRepositories(function (err, repositories) {
+var fillProjects = exports.fillProjects = function (username, cb) {
+  getRepositories(username, function (err, repositories) {
     var projects = [];
 
     repositories.forEach(function (repository) {
@@ -89,6 +97,25 @@ exports.fillProjects = function (cb) {
       projects.push(project);
     });
 
-    cb(null, projects);
+    cb(err, projects);
   });
 };
+
+if (require.main === module) {
+  program.option('--git-url-type [type]', 'The Git URL type to use ' +
+    '[git, ssh, https]', 'https');
+
+  program.parse(process.argv);
+
+  projectsFile.get(function (projects) {
+    fillProjects(projects.meta.github.username, function (err, repositories) {
+      if (err) {
+        console.log('There was an error accessing your GitHub data:', err);
+
+        process.exit(1);
+      }
+
+      console.log(JSON.stringify(repositories, null, 2));
+    });
+  });
+}

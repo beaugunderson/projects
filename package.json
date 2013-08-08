@@ -7,7 +7,10 @@
     "test": "mocha -R spec"
   },
   "bin": {
-    "projects": "./projects.js"
+    "prj": "./bin/projects.js",
+    "prj-checkout": "./bin/projects-checkout.js",
+    "prj-github": "./bin/projects-github.js",
+    "prj-query": "./bin/projects-query.js"
   },
   "preferGlobal": true,
   "repository": {
@@ -28,9 +31,9 @@
     "lodash": "~1.3.1",
     "async": "~0.2.9",
     "commander": "~2.0.0",
-    "pkginfo": "~0.3.0",
     "moment": "~2.1.0",
-    "chalk": "~0.2.0"
+    "chalk": "~0.2.0",
+    "helmsman": "~0.2.4"
   },
   "devDependencies": {
     "chai": "~1.7.2",

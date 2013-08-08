@@ -1,11 +1,14 @@
+#!/usr/bin/env node
+
+exports.command = {
+  description: 'query your projects'
+};
+
 var chalk = require('chalk');
-var fs = require('fs');
-var path = require('path');
+var program = require('commander');
 var _ = require('lodash');
 
-var home = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
-
-var projectsFile = path.join(home, '.projects.json');
+var projectsFile = require('../lib/projectsFile.js');
 
 var projectName = chalk.bold;
 
@@ -19,25 +22,11 @@ function formatRole(project) {
     chalk.gray(project.role);
 }
 
-exports.query = function (term) {
+var query = exports.query = function (term) {
   term = new RegExp(term, 'i');
 
-  fs.exists(projectsFile, function (exists) {
-    if (!exists) {
-      console.error('You need a ~/projects.json file.');
-
-      process.exit(1);
-    }
-
-    var projects;
-
-    try {
-      projects = require(projectsFile);
-    } catch (e) {
-      console.error('Error opening', projectsFile, ':', e);
-
-      process.exit(1);
-    }
+  projectsFile.get(function (projects) {
+    projects = projects.projects;
 
     projects = _.sortBy(projects, function (project) {
       return project.name.toLowerCase();
@@ -59,3 +48,9 @@ exports.query = function (term) {
     });
   });
 };
+
+if (require.main === module) {
+  program.parse(process.argv);
+
+  query(program.args.join(' '));
+}
