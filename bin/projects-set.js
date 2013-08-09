@@ -28,17 +28,13 @@ storage.setup(function () {
   var attribute = program.args[1];
   var value = program.args[2];
 
-  var project = storage.getProject(name);
-
-  if (!project) {
-    console.error(util.format('Project "%s" does not exist.', name));
-
-    process.exit(1);
-  }
+  // XXX: Is there an update semantic that would work well here?
+  var project = storage.getProjectOrDie(name);
 
   project[attribute] = value;
 
   storage.db.set(project.name, project, function () {
-    console.log(util.format('Set %s:%s to "%s"', project.name, attribute, value));
+    console.log(util.format('Set %s:%s to "%s"', project.name, attribute,
+      value));
   });
 });

@@ -11,7 +11,6 @@ if (require.main !== module) {
 var path = require('path');
 var program = require('commander');
 var spawn = require('child_process').spawn;
-var _ = require('lodash');
 
 var config = require('../lib/config.js');
 var storage = require('../lib/storage.js');
@@ -35,21 +34,9 @@ if (!directory) {
 directory = utilities.expand(directory);
 
 storage.setup(function () {
-  var results = storage.query({
-    name: {
-      $regex: new RegExp(program.args[0], 'i')
-    }
-  });
+  var project = storage.getProjectOrDie(program.args[0]);
 
-  if (!results.length) {
-    console.error('Project "' + program.args[0] + '" does not exist.');
-
-    process.exit(1);
-  }
-
-  var project = _.first(results);
-
-  // TODO: Properly pass through the error code from git
-  spawn('git', ['clone', project.repository,
-    path.join(directory, project.name)], { stdio: 'inherit' });
+  spawn('git',
+    ['clone', project.repository,  path.join(directory, project.name)],
+    { stdio: 'inherit' }).on('close', process.exit);
 });

@@ -37,6 +37,7 @@ storage.setup(function () {
       process.exit(1);
     }
 
+    // TODO: Overwite vs. update
     async.forEachSeries(projects, function (project, cbForEach) {
       console.log('Adding', project.name);
 

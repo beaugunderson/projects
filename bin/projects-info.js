@@ -23,13 +23,7 @@ storage.setup(function () {
     process.exit(1);
   }
 
-  var project = storage.getProject(program.args[0]);
-
-  if (!project) {
-    console.error('Project "' + program.args[0] + '" does not exist.');
-
-    process.exit(1);
-  }
+  var project = storage.getProjectOrDie(program.args[0]);
 
   console.log(JSON.stringify(project, null, 2));
 });

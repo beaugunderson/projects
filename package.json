@@ -1,16 +1,21 @@
 {
   "name": "projects",
   "version": "0.0.0",
-  "description": "You're a prolific developer (or you want to be). Keep track of and show off your projects.",
+  "description": "You're a prolific developer (or you want to be). Manage, keep track of, and show off your projects.",
   "main": "index.js",
   "scripts": {
     "test": "mocha -R spec"
   },
   "bin": {
-    "prj": "./bin/projects.js",
-    "prj-checkout": "./bin/projects-checkout.js",
-    "prj-github": "./bin/projects-github.js",
-    "prj-query": "./bin/projects-query.js"
+    "projects": "./bin/projects.js",
+    "projects-clone": "./bin/projects-clone.js",
+    "projects-github": "./bin/projects-github.js",
+    "projects-info": "./bin/projects-info.js",
+    "projects-json-in": "./bin/projects-json-in.js",
+    "projects-json-out": "./bin/projects-json-out.js",
+    "projects-open": "./bin/projects-open.js",
+    "projects-query": "./bin/projects-query.js",
+    "projects-set": "./bin/projects-set.js"
   },
   "preferGlobal": true,
   "repository": {

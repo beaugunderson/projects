@@ -54,6 +54,8 @@ var getRepositories = exports.getRepositories = function (cb) {
   function (cbUntil) {
     page++;
 
+    console.log('Retrieving repositories page', page);
+
     request.get({
       url: 'https://api.github.com/users/' + (program.username ||
         config.github.username) + '/repos',
@@ -116,8 +118,7 @@ program.option('-u, --username', 'The GitHub username');
 program._name = 'github';
 program.parse(process.argv);
 
-// TODO: Merge config with a defaults object to remove redundant checks
-if (!program.username && (!config.github || !config.github.username)) {
+if (!program.username && !config.github.username) {
   console.error('Please specify a GitHub username in', utilities.CONFIG_FILE,
     'or via the -u, --username flag.');
 
@@ -125,6 +126,8 @@ if (!program.username && (!config.github || !config.github.username)) {
 }
 
 storage.setup(function () {
+  console.log('Filling projects from GitHub');
+
   fillProjects(function (err, projects) {
     if (err) {
       console.log('There was an error accessing your GitHub data:', err);
@@ -135,7 +138,7 @@ storage.setup(function () {
     async.forEachSeries(projects, function (project, cbForEach) {
       console.log('Adding', project.name);
 
-      storage.db.set(project.name, project, cbForEach);
+      storage.upsertProject(project, cbForEach);
     });
   });
 });
