@@ -4,13 +4,19 @@ exports.command = {
   description: 'fill your .projects with your GitHub repositories'
 };
 
+if (require.main !== module) {
+  return;
+}
+
 var async = require('async');
 var moment = require('moment');
 var program = require('commander');
 var request = require('request');
 var _ = require('lodash');
 
-var projectsFile = require('../lib/projectsFile.js');
+var config = require('../lib/config.js');
+var storage = require('../lib/storage.js');
+var utilities = require('../lib/utilities.js');
 
 var ATTRIBUTES = [
   'name',
@@ -36,7 +42,7 @@ var GITHUB_URL_MAPPINGS = {
 
 var SIX_MONTHS_AGO = moment().subtract('months', 6);
 
-var getRepositories = exports.getRepositories = function (username, cb) {
+var getRepositories = exports.getRepositories = function (cb) {
   var count;
   var page = 0;
 
@@ -49,7 +55,8 @@ var getRepositories = exports.getRepositories = function (username, cb) {
     page++;
 
     request.get({
-      url: 'https://api.github.com/users/' + username + '/repos',
+      url: 'https://api.github.com/users/' + (program.username ||
+        config.github.username) + '/repos',
       json: true,
       qs: {
         page: page
@@ -79,14 +86,14 @@ function isActive(repository) {
     (pushed && pushed.isAfter(SIX_MONTHS_AGO));
 }
 
-var fillProjects = exports.fillProjects = function (username, cb) {
-  getRepositories(username, function (err, repositories) {
+var fillProjects = exports.fillProjects = function (cb) {
+  getRepositories(function (err, repositories) {
     var projects = [];
 
     repositories.forEach(function (repository) {
       var project = {
         name: repository.name,
-        repository: repository[GITHUB_URL_MAPPINGS[program.gitUrlType]],
+        repository: repository[GITHUB_URL_MAPPINGS[program.urlType]],
         homepage: repository.homepage || repository.html_url,
         language: repository.language,
         role: repository.fork ? 'contributor' : 'creator',
@@ -101,21 +108,34 @@ var fillProjects = exports.fillProjects = function (username, cb) {
   });
 };
 
-if (require.main === module) {
-  program.option('--git-url-type [type]', 'The Git URL type to use ' +
-    '[git, ssh, https]', 'https');
+program.option('--url-type [type]', 'The Git URL type to use ' +
+  '[git, ssh, https]', 'https');
 
-  program.parse(process.argv);
+program.option('-u, --username', 'The GitHub username');
 
-  projectsFile.get(function (projects) {
-    fillProjects(projects.meta.github.username, function (err, repositories) {
-      if (err) {
-        console.log('There was an error accessing your GitHub data:', err);
+program._name = 'github';
+program.parse(process.argv);
 
-        process.exit(1);
-      }
+// TODO: Merge config with a defaults object to remove redundant checks
+if (!program.username && (!config.github || !config.github.username)) {
+  console.error('Please specify a GitHub username in', utilities.CONFIG_FILE,
+    'or via the -u, --username flag.');
 
-      console.log(JSON.stringify(repositories, null, 2));
+  process.exit(1);
+}
+
+storage.setup(function () {
+  fillProjects(function (err, projects) {
+    if (err) {
+      console.log('There was an error accessing your GitHub data:', err);
+
+      process.exit(1);
+    }
+
+    async.forEachSeries(projects, function (project, cbForEach) {
+      console.log('Adding', project.name);
+
+      storage.db.set(project.name, project, cbForEach);
     });
   });
-}
+});

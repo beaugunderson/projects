@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var helmsman = require('helmsman');
+var helmsman = require('../../node-helmsman');
 
 var program = helmsman();
 

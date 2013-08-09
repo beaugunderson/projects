@@ -33,7 +33,11 @@
     "commander": "~2.0.0",
     "moment": "~2.1.0",
     "chalk": "~0.2.0",
-    "helmsman": "~0.2.4"
+    "helmsman": "~0.2.4",
+    "dirty": "~0.9.7",
+    "mkdirp": "~0.3.5",
+    "dirty-query": "~0.1.1",
+    "ini": "~1.1.0"
   },
   "devDependencies": {
     "chai": "~1.7.2",

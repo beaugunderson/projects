@@ -4,11 +4,15 @@ exports.command = {
   description: 'query your projects'
 };
 
+if (require.main !== module) {
+  return;
+}
+
 var chalk = require('chalk');
 var program = require('commander');
 var _ = require('lodash');
 
-var projectsFile = require('../lib/projectsFile.js');
+var storage = require('../lib/storage.js');
 
 var projectName = chalk.bold;
 
@@ -22,35 +26,30 @@ function formatRole(project) {
     chalk.gray(project.role);
 }
 
-var query = exports.query = function (term) {
-  term = new RegExp(term, 'i');
+function query(term) {
+  var projects = storage.query({ name: { $likeI: term } });
 
-  projectsFile.get(function (projects) {
-    projects = projects.projects;
-
-    projects = _.sortBy(projects, function (project) {
-      return project.name.toLowerCase();
-    });
-
-    projects = _.filter(projects, function (project) {
-      return term.test(project.name);
-    });
-
-    projects.forEach(function (project) {
-      var output = _.filter([
-        projectName(project.name),
-        formatStatus(project),
-        formatRole(project),
-        project.language
-      ]).join(', ');
-
-      console.log(output);
-    });
+  // XXX: Sort in query?
+  projects = _.sortBy(projects, function (project) {
+    return project.name.toLowerCase();
   });
-};
 
-if (require.main === module) {
-  program.parse(process.argv);
+  projects.forEach(function (project) {
+    var output = _.filter([
+      projectName(project.name),
+      formatStatus(project),
+      formatRole(project),
+      project.language
+    ]).join(', ');
 
-  query(program.args.join(' '));
+    console.log(output);
+  });
 }
+
+program._name = 'query';
+program.usage('<term>');
+program.parse(process.argv);
+
+storage.setup(function () {
+  query(program.args.join(' '));
+});
