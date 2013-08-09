@@ -33,6 +33,12 @@ if (!directory) {
 
 directory = utilities.expand(directory);
 
+if (!program.args.length) {
+  console.error('Please specify a project.');
+
+  process.exit(1);
+}
+
 storage.setup(function () {
   var project = storage.getProjectOrDie(program.args[0]);
 
