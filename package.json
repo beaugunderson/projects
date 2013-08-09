@@ -9,6 +9,8 @@
   "bin": {
     "projects": "./bin/projects.js",
     "projects-clone": "./bin/projects-clone.js",
+    "projects-gc": "./bin/projects-gc.js",
+    "projects-get": "./bin/projects-get.js",
     "projects-github": "./bin/projects-github.js",
     "projects-info": "./bin/projects-info.js",
     "projects-json-in": "./bin/projects-json-in.js",

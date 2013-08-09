@@ -42,6 +42,8 @@ if (!program.args.length) {
 storage.setup(function () {
   var project = storage.getProjectOrDie(program.args[0]);
 
+  // TODO: use project:directory if it exists, set project:directory if it
+  // doesn't
   spawn('git',
     ['clone', project.repository,  path.join(directory, project.name)],
     { stdio: 'inherit' }).on('close', process.exit);
