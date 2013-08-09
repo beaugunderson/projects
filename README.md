@@ -12,7 +12,7 @@ off your projects with ease.
 - json-out: export your projects to plain JSON
 - open: open a project's homepage
 - query: query your projects
-- set set an attribute to a given value for a project
+- set: set an attribute to a given value for a project
 
 ### Writing your own commands
 
@@ -48,7 +48,7 @@ $ p info vim-scss-instead
 
 $ p set vim-scss-instead homepage https://github.com/beaugunderson/vim-scss-instead
 Set vim-scss-instead:homepage to "https://github.com/beaugunderson/vim-scss-instead"
-$ p open vim-scss-instead # opens a web browser to the `homepage` URL
+$ p open vim-scss-instead # opens a web browser to the homepage URL
 $ p clone vim-scss-instead
 Cloning into '/Users/beau/p/vim-scss-instead'...
 remote: Counting objects: 5, done.
@@ -67,6 +67,7 @@ Finished
 ### TODO
 
 - Flesh out the query API (by number of issues, by last update, by dirty status)
+- Open a browser on Windows, Linux (just uses OS X `open` right now)
 - A web API and examples of what you'd do with it
 - More well-defined attributes
 - Think more about efficiency
