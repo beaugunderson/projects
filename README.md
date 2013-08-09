@@ -18,17 +18,13 @@ off your projects with ease.
 
 ```sh
 $ alias p=projects
-
 $ cat ~/.config/projects
-
 [github]
 username = beaugunderson
 
 [projects]
 directory = ~/p
-
 $ p info vim-scss-instead
-
 {
   "name": "vim-scss-instead",
   "repository": "https://github.com/beaugunderson/vim-scss-instead.git",
@@ -37,21 +33,15 @@ $ p info vim-scss-instead
   "released": true,
   "status": "inactive"
 }
-
 $ p set vim-scss-instead homepage https://github.com/beaugunderson/vim-scss-instead
-
 Set vim-scss-instead:homepage to "https://github.com/beaugunderson/vim-scss-instead"
-
 $ p open vim-scss-instead # opens a web browser to the `homepage` URL
-
 $ p clone vim-scss-instead
-
 Cloning into '/Users/beau/p/vim-scss-instead'...
 remote: Counting objects: 5, done.
 remote: Compressing objects: 100% (4/4), done.
 remote: Total 5 (delta 0), reused 5 (delta 0)
 Receiving objects: 100% (5/5), done.
-
 $ p github
 <snip>
 Adding vim-scss-instead
