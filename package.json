@@ -44,7 +44,8 @@
     "mkdirp": "~0.3.5",
     "dirty-query": "~0.1.1",
     "ini": "~1.1.0",
-    "helmsman": "git+https://github.com/beaugunderson/node-helmsman.git"
+    "helmsman": "git+https://github.com/beaugunderson/node-helmsman.git",
+    "dirty-compact": "0.0.1"
   },
   "devDependencies": {
     "chai": "~1.7.2",
