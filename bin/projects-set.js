@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 exports.command = {
-  description: 'set an attribute to a given value for a project'
+  description: 'set an attribute to a given value for a project',
+  arguments: '<project> <attribute> <value>'
 };
 
 if (require.main !== module) {

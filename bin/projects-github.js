@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 exports.command = {
-  description: 'fill your .projects with your GitHub repositories'
+  description: 'fill your projects.db from GitHub'
 };
 
 if (require.main !== module) {

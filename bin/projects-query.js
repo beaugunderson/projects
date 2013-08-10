@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 exports.command = {
-  description: 'query your projects'
+  description: 'query your projects',
+  arguments: '[term]'
 };
 
 if (require.main !== module) {

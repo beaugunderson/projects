@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 exports.command = {
-  description: 'open a project\'s homepage'
+  description: 'open a project\'s homepage',
+  arguments: '<project>'
 };
 
 if (require.main !== module) {

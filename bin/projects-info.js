@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 exports.command = {
-  description: 'show the JSON for a given project'
+  description: 'show the JSON for a given project',
+  arguments: '<project>'
 };
 
 if (require.main !== module) {

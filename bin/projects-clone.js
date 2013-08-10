@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 exports.command = {
-  description: '`git clone` a project'
+  description: '`git clone` a project',
+  arguments: '<project>'
 };
 
 if (require.main !== module) {

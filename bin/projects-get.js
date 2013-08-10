@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 exports.command = {
-  description: 'get an attribute for a project'
+  description: 'get an attribute for a project',
+  arguments: '<project> <attribute>'
 };
 
 if (require.main !== module) {
