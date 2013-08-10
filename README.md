@@ -78,7 +78,7 @@ Finished
   speed increase
 - Be as `git`-like as possible when the concepts are similar/the same to prevent
   having to learn a new way of doing things
-- Shell functions (pcd <project>, for example, will change the directory to a
+- Shell functions (`pcd <project>`, for example, will change the directory to a
   project's directory)
 - Flesh out the query API (by number of issues, by last update, by dirty status,
   by number of collaborators, number of npm stars, number of packages used,
