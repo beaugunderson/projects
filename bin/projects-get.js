@@ -27,10 +27,10 @@ storage.setup(function () {
     process.exit(1);
   }
 
+  // TODO: Support '.' for the project in the current directory
   var name = program.args[0];
   var attribute = program.args[1];
 
-  // XXX: Is there an update semantic that would work well here?
   var project = storage.getProjectOrDie(name);
 
   if (program.porcelain) {

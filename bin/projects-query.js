@@ -15,6 +15,7 @@ var _ = require('lodash');
 
 var storage = require('../lib/storage.js');
 
+// TODO: Think about colors and display
 var projectName = chalk.bold;
 
 function formatStatus(project) {
@@ -28,12 +29,8 @@ function formatRole(project) {
 }
 
 function query(term) {
-  var projects = storage.query({ name: { $likeI: term } });
-
-  // XXX: Sort in query?
-  projects = _.sortBy(projects, function (project) {
-    return project.name.toLowerCase();
-  });
+  var projects = storage.query({ name: { $likeI: term } },
+    { sortBy: function (project) { return project.name.toLowerCase(); } });
 
   projects.forEach(function (project) {
     var output = _.filter([
