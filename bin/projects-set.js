@@ -25,17 +25,16 @@ storage.setup(function () {
     process.exit(1);
   }
 
+  // TODO: Support '.' for the project in the current directory
   var name = program.args[0];
   var attribute = program.args[1];
   var value = program.args[2];
 
-  // XXX: Is there an update semantic that would work well here?
-  var project = storage.getProjectOrDie(name);
+  var updates = {};
 
-  project[attribute] = value;
+  updates[attribute] = value;
 
-  storage.db.set(project.name, project, function () {
-    console.log(util.format('Set %s:%s to "%s"', project.name, attribute,
-      value));
+  storage.updateProjectOrDie(name, updates, function () {
+    console.log(util.format('Set %s:%s to "%s"', name, attribute, value));
   });
 });

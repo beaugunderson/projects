@@ -23,29 +23,36 @@ program._name = 'clone';
 program.usage('<project>');
 program.parse(process.argv);
 
-var directory = program.directory || config.projects.directory;
+var projectName = program.args[0];
 
-if (!directory) {
-  console.error('Please specify a projects directory in',
-    utilities.CONFIG_FILE, 'or via the -d, --directory flag.');
-
-  process.exit(1);
-}
-
-directory = utilities.expand(directory);
-
-if (!program.args.length) {
+if (!projectName) {
   console.error('Please specify a project.');
 
   process.exit(1);
 }
 
 storage.setup(function () {
-  var project = storage.getProjectOrDie(program.args[0]);
+  var project = storage.getProjectOrDie(projectName);
 
-  // TODO: use project:directory if it exists, set project:directory if it
-  // doesn't
-  spawn('git',
-    ['clone', project.repository,  path.join(directory, project.name)],
-    { stdio: 'inherit' }).on('close', process.exit);
+  var directory;
+
+  directory = project.directory ||
+    path.join(program.directory || config.projects.directory, project.name);
+
+  if (!directory) {
+    console.error('Please specify a projects directory in',
+      utilities.CONFIG_FILE, 'or via the -d, --directory flag.');
+
+    process.exit(1);
+  }
+
+  // Store the directory we resolved for the project in its entry for use by
+  // other scripts
+  storage.updateProject(projectName, { directory: directory }, function () {
+    directory = utilities.expand(directory);
+
+    spawn('git',
+      ['clone', project.repository,  directory],
+      { stdio: 'inherit' }).on('close', process.exit);
+  });
 });
