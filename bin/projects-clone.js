@@ -14,6 +14,7 @@ var program = require('commander');
 var spawn = require('child_process').spawn;
 
 var config = require('../lib/config.js');
+var paths = require('../lib/paths.js');
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
@@ -41,7 +42,7 @@ storage.setup(function () {
 
   if (!directory) {
     console.error('Please specify a projects directory in',
-      utilities.CONFIG_FILE, 'or via the -d, --directory flag.');
+      paths.CONFIG_FILE, 'or via the -d, --directory flag.');
 
     process.exit(1);
   }

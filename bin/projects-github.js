@@ -15,8 +15,8 @@ var request = require('request');
 var _ = require('lodash');
 
 var config = require('../lib/config.js');
+var paths = require('../lib/paths.js');
 var storage = require('../lib/storage.js');
-var utilities = require('../lib/utilities.js');
 
 var ATTRIBUTES = [
   'name',
@@ -119,7 +119,7 @@ program._name = 'github';
 program.parse(process.argv);
 
 if (!program.username && !config.github.username) {
-  console.error('Please specify a GitHub username in', utilities.CONFIG_FILE,
+  console.error('Please specify a GitHub username in', paths.CONFIG_FILE,
     'or via the -u, --username flag.');
 
   process.exit(1);
