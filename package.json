@@ -45,7 +45,8 @@
     "dirty-query": "~0.1.1",
     "ini": "~1.1.0",
     "helmsman": "git+https://github.com/beaugunderson/node-helmsman.git",
-    "dirty-compact": "0.0.1"
+    "dirty-compact": "0.0.1",
+    "glob": "~3.2.6"
   },
   "devDependencies": {
     "chai": "~1.7.2",
