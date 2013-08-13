@@ -138,7 +138,7 @@ storage.setup(function () {
     async.forEachSeries(projects, function (project, cbForEach) {
       console.log('Adding', project.name);
 
-      storage.upsertProject(project, cbForEach);
+      storage.upsertProject(project.name, project, cbForEach);
     });
   });
 });
