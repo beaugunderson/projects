@@ -1,6 +1,6 @@
 {
   "name": "projects",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "You're a prolific developer (or you want to be). Manage, keep track of, and show off your projects.",
   "main": "index.js",
   "scripts": {
