@@ -47,7 +47,8 @@
     "helmsman": "git+https://github.com/beaugunderson/node-helmsman.git",
     "dirty-compact": "0.0.1",
     "glob": "~3.2.6",
-    "gift": "0.0.6"
+    "gift": "0.0.6",
+    "underscore.string": "~2.3.3"
   },
   "devDependencies": {
     "chai": "~1.7.2",
