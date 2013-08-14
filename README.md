@@ -7,19 +7,29 @@ off your projects with ease.
 
 ```sh
 $ npm install -g projects
-$ projects help
 ```
 
 ### Commands
 
-- clone: `git clone` a project
-- github: fill your ~/.config/projects.db with your GitHub repositories
-- info: show the JSON for a given project
-- json-in: import your projects from plain JSON
-- json-out: export your projects to plain JSON
-- open: open a project's homepage
-- query: query your projects
-- set: set an attribute to a given value for a project
+| Command        | Description                                                 |
+|----------------|-------------------------------------------------------------|
+| `alias`        | output shell aliases                                        |
+| `clone`        | `git clone` a project                                       |
+| `each`         | run a command in each project directory                     |
+| `edit`         | edit projects files                                         |
+| `gc`           | compact the projects database                               |
+| `get`          | get an attribute for a project                              |
+| `git-status`   | `git status` across all repositories                        |
+| `git-unpushed` | display repositories with unpushed commits                  |
+| `github`       | fill your projects database with your GitHub repositories   |
+| `glob`         | glob across all project directories                         |
+| `info`         | show the JSON for a given project                           |
+| `json-in`      | import your projects from plain JSON                        |
+| `json-out`     | export your projects to plain JSON                          |
+| `open`         | open a project's homepage                                   |
+| `query`        | query your projects                                         |
+| `remind`       | get a reminder of what you were last working on             |
+| `set`          | set an attribute to a given value for a project             |
 
 ### Writing your own commands
 
@@ -69,13 +79,17 @@ Adding vim-scss-instead
 Adding vim-human-dates
 <snip>
 Finished
+
+$ p git-unpushed
+node-helmsman: 6 commits ahead of origin
+projects: 3 commits ahead of origin
 ```
 
 ### TODO
 
 - Add ability to specify flag defaults in ~/.config/projects for each command
-- Modify node-helmsman so that it doesn't require all files (and add ability to
-  specify description, etc. from the helmsman object); this will be a large
+- Modify node-helmsman so that it doesn't require() all files (and add ability
+  to specify description, etc. from the helmsman object); this will be a large
   speed increase
 - Be as `git`-like as possible when the concepts are similar/the same to prevent
   having to learn a new way of doing things
