@@ -55,7 +55,8 @@
     "dirty-compact": "0.0.1",
     "glob": "~3.2.6",
     "gift": "0.0.6",
-    "underscore.string": "~2.3.3"
+    "underscore.string": "~2.3.3",
+    "split": "~0.2.10"
   },
   "devDependencies": {
     "chai": "~1.7.2",
