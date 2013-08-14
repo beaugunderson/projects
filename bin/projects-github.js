@@ -42,6 +42,26 @@ var GITHUB_URL_MAPPINGS = {
 
 var SIX_MONTHS_AGO = moment().subtract('months', 6);
 
+var GITHUB_BASE_URL = 'https://api.github.com';
+
+program.option('--url-type [type]', 'The Git URL type to use ' +
+  '[git, ssh, https]', 'https');
+
+program.option('-u, --username', 'The GitHub username');
+
+program._name = 'github';
+program.parse(process.argv);
+
+if ((!program.username && !config.github.username) &&
+  !config.github.access_token) {
+  console.error('Please specify a GitHub username or an access_token in',
+    paths.CONFIG_FILE, 'or a username via the -u, --username flag.');
+
+  process.exit(1);
+}
+
+var username = program.username || config.github.username;
+
 var getRepositories = exports.getRepositories = function (cb) {
   var count;
   var page = 0;
@@ -56,13 +76,24 @@ var getRepositories = exports.getRepositories = function (cb) {
 
     console.log('Retrieving repositories page', page);
 
+    var qs = {
+      page: page
+    };
+
+    var url = GITHUB_BASE_URL;
+
+    if (config.github.access_token) {
+      url += '/user/repos';
+
+      qs.access_token = config.github.access_token;
+    } else {
+      url += '/users/' + username + '/repos';
+    }
+
     request.get({
-      url: 'https://api.github.com/users/' + (program.username ||
-        config.github.username) + '/repos',
-      json: true,
-      qs: {
-        page: page
-      }
+      url: url,
+      qs: qs,
+      json: true
     }, function (err, resp, repositories) {
       repositories = _.map(repositories, function (repo) {
         return _.pick(repo, ATTRIBUTES);
@@ -109,21 +140,6 @@ var fillProjects = exports.fillProjects = function (cb) {
     cb(err, projects);
   });
 };
-
-program.option('--url-type [type]', 'The Git URL type to use ' +
-  '[git, ssh, https]', 'https');
-
-program.option('-u, --username', 'The GitHub username');
-
-program._name = 'github';
-program.parse(process.argv);
-
-if (!program.username && !config.github.username) {
-  console.error('Please specify a GitHub username in', paths.CONFIG_FILE,
-    'or via the -u, --username flag.');
-
-  process.exit(1);
-}
 
 storage.setup(function () {
   console.log('Filling projects from GitHub');
