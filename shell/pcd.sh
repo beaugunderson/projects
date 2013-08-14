@@ -1,5 +1,3 @@
-function pcd() {
-  DIRECTORY=`projects get --porcelain $1 directory`
-
-  cd $DIRECTORY
+pcd () {
+  cd `projects get --porcelain $1 directory`;
 }
