@@ -29,8 +29,24 @@ function formatRole(project) {
 }
 
 function query(term) {
-  var projects = storage.query({ name: { $likeI: term } },
-    { sortBy: function (project) { return project.name.toLowerCase(); } });
+  var projects;
+
+  if (term.indexOf(':') !== -1) {
+    term = term.split(':');
+
+    var attribute = term[0];
+    var value = term[1];
+
+    var predicate = {};
+
+    predicate[attribute] = { $equal: value };
+
+    projects = storage.query(predicate,
+      { sortBy: function (project) { return project.name.toLowerCase(); } });
+  } else {
+    projects = storage.query({ name: { $likeI: term } },
+      { sortBy: function (project) { return project.name.toLowerCase(); } });
+  }
 
   projects.forEach(function (project) {
     var output = _.filter([
