@@ -56,7 +56,9 @@
     "glob": "~3.2.6",
     "gift": "0.0.6",
     "underscore.string": "~2.3.3",
-    "split": "~0.2.10"
+    "split": "~0.2.10",
+    "cardinal": "~0.4.2",
+    "has-color": "~0.1.1"
   },
   "devDependencies": {
     "chai": "~1.7.2",
