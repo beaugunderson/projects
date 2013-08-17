@@ -28,6 +28,44 @@ function formatRole(project) {
     chalk.gray(project.role);
 }
 
+function outputProjectsAlfred(projects) {
+  var et = require('elementtree');
+
+  var root = et.Element('items');
+
+  projects.forEach(function (project) {
+    var item = et.SubElement(root, 'item');
+
+    item.set('uid', project.name);
+    item.set('arg', project.name);
+    item.set('valid', 'YES');
+    item.set('autocomplete', project.name);
+
+    var title = et.SubElement(item, 'title');
+    title.text = project.name;
+
+    if (project.description) {
+      var subtitle = et.SubElement(item, 'subtitle');
+      subtitle.text = project.description;
+    }
+  });
+
+  console.log(new et.ElementTree(root).write());
+}
+
+function outputProjectsPlain(projects) {
+  projects.forEach(function (project) {
+    var output = _.filter([
+      projectName(project.name),
+      formatStatus(project),
+      formatRole(project),
+      project.language
+    ]).join(', ');
+
+    console.log(output);
+  });
+}
+
 function query(term) {
   var projects;
 
@@ -48,17 +86,15 @@ function query(term) {
       { sortBy: function (project) { return project.name.toLowerCase(); } });
   }
 
-  projects.forEach(function (project) {
-    var output = _.filter([
-      projectName(project.name),
-      formatStatus(project),
-      formatRole(project),
-      project.language
-    ]).join(', ');
+  if (program.alfred) {
+    return outputProjectsAlfred(projects);
+  }
 
-    console.log(output);
-  });
+  outputProjectsPlain(projects);
 }
+
+program.option('-a, --alfred',
+  'output XML in Alfred\'s format for autocompletion');
 
 program._name = 'query';
 program.usage('<term>');

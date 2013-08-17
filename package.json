@@ -58,7 +58,8 @@
     "underscore.string": "~2.3.3",
     "split": "~0.2.10",
     "cardinal": "~0.4.2",
-    "has-color": "~0.1.1"
+    "has-color": "~0.1.1",
+    "elementtree": "~0.1.5"
   },
   "devDependencies": {
     "chai": "~1.7.2",
