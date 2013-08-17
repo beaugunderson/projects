@@ -126,6 +126,7 @@ var fillProjects = exports.fillProjects = function (cb) {
     repositories.forEach(function (repository) {
       var project = {
         name: repository.name,
+        description: repository.description,
         repository: repository[GITHUB_URL_MAPPINGS[program.urlType]],
         homepage: repository.homepage || repository.html_url,
         language: repository.language,
