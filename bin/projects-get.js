@@ -13,6 +13,7 @@ var program = require('commander');
 var util = require('util');
 
 var storage = require('../lib/storage.js');
+var utilities = require('../lib/utilities.js');
 
 program.option('--porcelain', 'Get the value in a machine-readable way');
 
@@ -32,6 +33,11 @@ storage.setup(function () {
   var attribute = program.args[1];
 
   var project = storage.getProjectOrDie(name);
+
+  // XXX: Store the expanded directory instead? This feels hacky...
+  if (attribute === 'directory') {
+    project.directory = utilities.expand(project.directory);
+  }
 
   if (program.porcelain) {
     console.log(project[attribute]);
