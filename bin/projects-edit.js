@@ -9,13 +9,13 @@ if (require.main !== module) {
   return;
 }
 
-var program = require('commander');
 var spawn = require('child_process').spawn;
 
 var paths = require('../lib/paths.js');
+var utilities = require('../lib/utilities.js');
 
-program._name = 'edit';
-program.usage('<file>');
+var program = utilities.programDefaults('edit', '<file>');
+
 program.parse(process.argv);
 
 var file = program.args[0];

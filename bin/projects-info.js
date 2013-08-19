@@ -10,16 +10,11 @@ if (require.main !== module) {
 }
 
 var cardinal = require('cardinal');
-var hasColor = require('has-color');
-var program = require('commander');
 
 var storage = require('../lib/storage.js');
+var utilities = require('../lib/utilities.js');
 
-program.option('-c, --color [when]', 'color the output [auto]', 'auto');
-
-program._name = 'info';
-program.usage('<project>');
-program.parse(process.argv);
+var program = utilities.programDefaultsParse('info', '<project>');
 
 storage.setup(function () {
   if (!program.args.length) {
@@ -32,8 +27,7 @@ storage.setup(function () {
 
   var output = JSON.stringify(project, null, 2);
 
-  if ((program.color === 'auto' && hasColor) ||
-    program.color === 'always') {
+  if (program.hasColor) {
     console.log(cardinal.highlight(output, { json: true }));
   } else {
     console.log(output);

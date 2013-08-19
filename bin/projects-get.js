@@ -9,16 +9,13 @@ if (require.main !== module) {
   return;
 }
 
-var program = require('commander');
-var util = require('util');
-
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
+var program = utilities.programDefaults('get', '<project> <attribute>');
+
 program.option('--porcelain', 'Get the value in a machine-readable way');
 
-program._name = 'get';
-program.usage('<project> <attribute> <value>');
 program.parse(process.argv);
 
 storage.setup(function () {
@@ -42,7 +39,6 @@ storage.setup(function () {
   if (program.porcelain) {
     console.log(project[attribute]);
   } else {
-    console.log(util.format('%s:%s: "%s"', project.name, attribute,
-      project[attribute]));
+    console.log('%s:%s: "%s"', project.name, attribute, project[attribute]);
   }
 });

@@ -12,7 +12,6 @@ var async = require('async');
 var chalk = require('chalk');
 var gift = require('gift');
 var path = require('path');
-var program = require('commander');
 var _ = require('lodash');
 
 _.str = require('underscore.string');
@@ -20,8 +19,7 @@ _.str = require('underscore.string');
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
-program._name = 'git-status';
-program.parse(process.argv);
+utilities.programDefaultsParse('git-status');
 
 storage.setup(function () {
   var projects = storage.query({ directory: { $has: true } },

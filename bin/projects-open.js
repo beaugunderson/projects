@@ -9,14 +9,18 @@ if (require.main !== module) {
   return;
 }
 
-var program = require('commander');
 var spawn = require('child_process').spawn;
 
 var storage = require('../lib/storage.js');
+var utilities = require('../lib/utilities.js');
 
-program._name = 'open';
-program.usage('<project>');
-program.parse(process.argv);
+var program = utilities.programDefaultsParse('open', '<project>');
+
+if (!program.args[0]) {
+  console.error('Please specify a project.');
+
+  process.exit(1);
+}
 
 storage.setup(function () {
   var project = storage.getProjectOrDie(program.args[0]);

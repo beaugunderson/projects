@@ -13,7 +13,6 @@ var async = require('async');
 var chalk = require('chalk');
 var fs = require('fs');
 var path = require('path');
-var program = require('commander');
 var spawn = require('child_process').spawn;
 
 var config = require('../lib/config.js');
@@ -21,12 +20,13 @@ var paths = require('../lib/paths.js');
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
+var program = utilities.programDefaults('clone', '<project>');
+
 program.option('-a, --all', 'clone all projects with a repository');
 program.option('-d, --directory', 'the directory to clone into');
 
-program._name = 'clone';
-program.usage('<project>');
 program.parse(process.argv);
+program.handleColor();
 
 function clone(project, cb) {
   var directory;

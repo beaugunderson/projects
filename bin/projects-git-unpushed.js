@@ -8,15 +8,13 @@ if (require.main !== module) {
   return;
 }
 
-var program = require('commander');
 var spawn = require('child_process').spawn;
 var split = require('split');
 
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
-program._name = 'git-unpushed';
-program.parse(process.argv);
+utilities.programDefaultsParse('git-unpushed');
 
 storage.setup(function () {
   var projects = storage.query({ directory: { $has: true } },

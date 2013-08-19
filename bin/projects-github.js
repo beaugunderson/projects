@@ -10,13 +10,13 @@ if (require.main !== module) {
 
 var async = require('async');
 var moment = require('moment');
-var program = require('commander');
 var request = require('request');
 var _ = require('lodash');
 
 var config = require('../lib/config.js');
 var paths = require('../lib/paths.js');
 var storage = require('../lib/storage.js');
+var utilities = require('../lib/utilities.js');
 
 var ATTRIBUTES = [
   'name',
@@ -44,12 +44,13 @@ var SIX_MONTHS_AGO = moment().subtract('months', 6);
 
 var GITHUB_BASE_URL = 'https://api.github.com';
 
+var program = utilities.programDefaults('github');
+
 program.option('--url-type [type]', 'The Git URL type to use ' +
   '[git, ssh, https]', 'https');
 
 program.option('-u, --username', 'The GitHub username');
 
-program._name = 'github';
 program.parse(process.argv);
 
 if ((!program.username && !config.github.username) &&

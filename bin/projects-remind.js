@@ -21,9 +21,7 @@ var _ = require('lodash');
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
-program._name = 'remind';
-program.usage('[timespan]');
-program.parse(process.argv);
+var program = utilities.programDefaultsParse('remind', '[timespan]');
 
 var timespan = program.args[0];
 

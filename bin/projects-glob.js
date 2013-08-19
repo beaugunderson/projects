@@ -13,10 +13,11 @@ var async = require('async');
 var fs = require('fs');
 var Glob = require('glob').Glob;
 var path = require('path');
-var program = require('commander');
 
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
+
+var program = utilities.programDefaults('glob', '<command>');
 
 // XXX: Better way to word this?
 program.option('-d, --dot', 'match files beginning with a . by default');
@@ -24,8 +25,6 @@ program.option('-d, --dot', 'match files beginning with a . by default');
 program.option('-f, --files', 'only match files');
 program.option('--directories', 'only match directories');
 
-program._name = 'glob';
-program.usage('<command>');
 program.parse(process.argv);
 
 var options = {

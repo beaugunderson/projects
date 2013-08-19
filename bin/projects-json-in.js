@@ -9,14 +9,13 @@ if (require.main !== module) {
 }
 
 var async = require('async');
-var program = require('commander');
 
 var storage = require('../lib/storage.js');
+var utilities = require('../lib/utilities.js');
+
+utilities.programDefaultsParse('json-in');
 
 storage.setup(function () {
-  program._name = 'json-in';
-  program.parse(process.argv);
-
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
 

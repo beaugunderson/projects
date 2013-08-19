@@ -10,7 +10,6 @@ if (require.main !== module) {
 }
 
 var chalk = require('chalk');
-var program = require('commander');
 var spawn = require('child_process').spawn;
 var split = require('split');
 var _ = require('lodash');
@@ -20,6 +19,8 @@ _.str = require('underscore.string');
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
+var program = utilities.programDefaults('each', '<command>');
+
 program.option('-s, --stdout', 'run commands in our stdout');
 
 program.option('-n, --no-headers',
@@ -28,9 +29,8 @@ program.option('-n, --no-headers',
 program.option('-w, --warnings', 'warn on missing directories or directories ' +
   'that are actually files');
 
-program._name = 'each';
-program.usage('<command>');
 program.parse(process.argv);
+program.handleColor();
 
 var command = program.args[0];
 

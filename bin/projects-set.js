@@ -9,14 +9,11 @@ if (require.main !== module) {
   return;
 }
 
-var program = require('commander');
-var util = require('util');
-
 var storage = require('../lib/storage.js');
+var utilities = require('../lib/utilities.js');
 
-program._name = 'set';
-program.usage('<project> <attribute> <value>');
-program.parse(process.argv);
+var program = utilities.programDefaultsParse('set',
+  '<project> <attribute> <value>');
 
 storage.setup(function () {
   if (program.args.length !== 3) {
@@ -35,6 +32,6 @@ storage.setup(function () {
   updates[attribute] = value;
 
   storage.updateProjectOrDie(name, updates, function () {
-    console.log(util.format('Set %s:%s to "%s"', name, attribute, value));
+    console.log('Set %s:%s to "%s"', name, attribute, value);
   });
 });

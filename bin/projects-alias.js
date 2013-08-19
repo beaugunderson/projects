@@ -11,11 +11,10 @@ if (require.main !== module) {
 
 var fs = require('fs');
 var path = require('path');
-var program = require('commander');
 
-program._name = 'edit';
-program.usage('<file>');
-program.parse(process.argv);
+var utilities = require('../lib/utilities.js');
+
+utilities.programDefaultsParse('alias', '<file>');
 
 process.stdout.on('error', function (err) {
   if (err.code !== 'EPIPE') {

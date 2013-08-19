@@ -2,7 +2,7 @@
 
 exports.command = {
   description: 'query your projects',
-  arguments: '[term]'
+  arguments: '[term] | [attribute:value]'
 };
 
 if (require.main !== module) {
@@ -10,10 +10,18 @@ if (require.main !== module) {
 }
 
 var chalk = require('chalk');
-var program = require('commander');
 var _ = require('lodash');
 
 var storage = require('../lib/storage.js');
+var utilities = require('../lib/utilities.js');
+
+var program = utilities.programDefaults('query', '[term] | [attribute:value]');
+
+program.option('-a, --alfred',
+  'output XML in Alfred\'s format for autocompletion');
+
+program.parse(process.argv);
+program.handleColor();
 
 // TODO: Think about colors and display
 var projectName = chalk.bold;
@@ -92,13 +100,6 @@ function query(term) {
 
   outputProjectsPlain(projects);
 }
-
-program.option('-a, --alfred',
-  'output XML in Alfred\'s format for autocompletion');
-
-program._name = 'query';
-program.usage('<term>');
-program.parse(process.argv);
 
 storage.setup(function () {
   query(program.args.join(' '));
