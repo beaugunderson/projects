@@ -14,7 +14,7 @@ var utilities = require('../lib/utilities.js');
 
 var program = utilities.programDefaults('get', '<project> <attribute>');
 
-program.option('--porcelain', 'Get the value in a machine-readable way');
+program.option('-p, --porcelain', 'Get the value in a machine-readable way');
 
 program.parse(process.argv);
 

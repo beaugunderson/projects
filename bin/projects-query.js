@@ -17,6 +17,8 @@ var utilities = require('../lib/utilities.js');
 
 var program = utilities.programDefaults('query', '[term] | [attribute:value]');
 
+program.option('-p, --porcelain', 'Get the value in a machine-readable way');
+
 program.option('-a, --alfred',
   'output XML in Alfred\'s format for autocompletion');
 
@@ -63,12 +65,22 @@ function outputProjectsAlfred(projects) {
 
 function outputProjectsPlain(projects) {
   projects.forEach(function (project) {
-    var output = _.filter([
-      projectName(project.name),
-      formatStatus(project),
-      formatRole(project),
-      project.language
-    ]).join(', ');
+    var output;
+
+    if (program.porcelain) {
+      output = project.name;
+
+      if (project.directory) {
+        output += ': ' + project.directory;
+      }
+    } else {
+      output = _.filter([
+        projectName(project.name),
+        formatStatus(project),
+        formatRole(project),
+        project.language
+      ]).join(', ');
+    }
 
     console.log(output);
   });
@@ -77,6 +89,7 @@ function outputProjectsPlain(projects) {
 function query(term) {
   var projects;
 
+  // Search by attribute
   if (term.indexOf(':') !== -1) {
     term = term.split(':');
 
@@ -89,6 +102,7 @@ function query(term) {
 
     projects = storage.query(predicate,
       { sortBy: function (project) { return project.name.toLowerCase(); } });
+  // Search by name
   } else {
     projects = storage.query({ name: { $likeI: term } },
       { sortBy: function (project) { return project.name.toLowerCase(); } });
