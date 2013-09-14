@@ -41,14 +41,14 @@ if (program.stdout) {
 }
 
 function trimArray(array) {
-  var start = _(array).findIndex();
-  var end = array.length - _(_.clone(array)).reverse().findIndex();
+  var start = _.findIndex(array);
+  var end = _.findLastIndex(array);
 
   if (start === -1) {
     return [];
   }
 
-  return array.slice(start, end);
+  return array.slice(start, end + 1);
 }
 
 storage.setup(function () {
@@ -74,10 +74,10 @@ storage.setup(function () {
         lines.push(line);
       });
 
-      // We display things one of two ways--if there was only one line of output
-      // we print it on the same line as the project name; if there was more
-      // than one line we print it underneath, and if there were no lines of
-      // output we print the project name in yellow.
+      // We display things one of three ways--if there was only one line of
+      // output we print it on the same line as the project name; if there was
+      // more than one line we print it underneath, and if there were no lines
+      // of output we print the project name in yellow.
       bash.on('close', function () {
         lines = trimArray(lines);
 
