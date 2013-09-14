@@ -69,3 +69,23 @@ $ p glob --files "**/*.js" | xargs egrep -ho "async\.\w+" | sort | uniq -c | sor
   92 async.forEach
  100 async.forEachSeries
 ```
+
+How many files are in each project?
+
+```sh
+$ p each "find . -type f -and -not -path \"./.git/*\" -and -not -path \"./node_modules/*\" | wc -l"
+afterlife:                             26
+alfred-yammer:                          5
+bookbag-me:                            39
+BeauGunderson.Extensions:              31
+badger:                                 6
+ChangeBindingOrder:                    10
+ChrisTracker:                          51
+<snip>
+```
+How many files are there total?
+
+```sh
+$ p glob --files "**" | wc -l
+   10476
+```
