@@ -18,6 +18,7 @@
     "projects-git-unpushed": "./bin/projects-git-unpushed.js",
     "projects-github": "./bin/projects-github.js",
     "projects-glob": "./bin/projects-glob.js",
+    "projects-import": "./bin/projects-import.js",
     "projects-info": "./bin/projects-info.js",
     "projects-json-in": "./bin/projects-json-in.js",
     "projects-json-out": "./bin/projects-json-out.js",
