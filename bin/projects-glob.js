@@ -20,10 +20,10 @@ var utilities = require('../lib/utilities.js');
 var program = utilities.programDefaults('glob', '<command>');
 
 // XXX: Better way to word this?
-program.option('-d, --dot', 'match files beginning with a . by default');
-
+program.option('--dot', 'match files beginning with a . by default');
+program.option('-d, --directories', 'only match directories');
 program.option('-f, --files', 'only match files');
-program.option('--directories', 'only match directories');
+program.option('-n, --no-filter', 'don\'t filter .git, node_modules');
 
 program.parse(process.argv);
 
@@ -42,11 +42,8 @@ storage.setup(function () {
       pattern), options);
 
     glob.on('match', function (match) {
-      if (/node_modules/.test(match)) {
-        return;
-      }
-
-      if (/\/\.git\//.test(match)) {
+      if (!program.noFilter && (/node_modules/.test(match) ||
+        /\/\.git\//.test(match))) {
         return;
       }
 
