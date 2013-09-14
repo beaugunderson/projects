@@ -1,5 +1,3 @@
-- Import a directory of projects, move projects-github under that?
-  - Use this: git ls-remote --get-url [REMOTE]
 - Add ability to specify flag defaults in ~/.config/projects for each command
 - Modify node-helmsman so that it doesn't require() all files (and add ability
   to specify description, etc. from the helmsman object); this will be a large
