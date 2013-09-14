@@ -2,7 +2,7 @@
 
 exports.command = {
   description: 'edit projects\' own files',
-  arguments: '<project>'
+  arguments: 'config|db|database'
 };
 
 if (require.main !== module) {
@@ -14,9 +14,7 @@ var spawn = require('child_process').spawn;
 var paths = require('../lib/paths.js');
 var utilities = require('../lib/utilities.js');
 
-var program = utilities.programDefaults('edit', '<file>');
-
-program.parse(process.argv);
+var program = utilities.programDefaultsParse('edit', 'config|db|database');
 
 var file = program.args[0];
 
@@ -28,4 +26,6 @@ if (file === 'db' || file === 'database') {
   spawn(process.env.EDITOR,
     [paths.CONFIG_FILE],
     { stdio: 'inherit' }).on('close', process.exit);
+} else {
+  program.help();
 }
