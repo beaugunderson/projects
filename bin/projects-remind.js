@@ -69,7 +69,7 @@ storage.setup(function () {
 
       _.first(sortedFiles, 10).forEach(function (file) {
         console.log(utilities.colorizePath(file),
-          chalk.gray(moment(files[file]).fromNow()));
+          chalk.gray(moment(files[file]).fromNow(true)));
       });
     };
   });
