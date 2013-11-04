@@ -43,11 +43,11 @@
   },
   "dependencies": {
     "request": "~2.27.0",
-    "lodash": "~2.0.0",
+    "lodash": "~2.2.1",
     "async": "~0.2.9",
     "commander": "~2.0.0",
-    "moment": "~2.2.1",
-    "chalk": "~0.2.1",
+    "moment": "~2.4.0",
+    "chalk": "~0.3.0",
     "dirty": "~0.9.7",
     "mkdirp": "~0.3.5",
     "dirty-query": "~0.1.1",
@@ -55,7 +55,7 @@
     "helmsman": "git+https://github.com/beaugunderson/node-helmsman.git",
     "dirty-compact": "0.0.1",
     "glob": "~3.2.6",
-    "gift": "0.0.6",
+    "gift": "0.1.1",
     "underscore.string": "~2.3.3",
     "split": "~0.2.10",
     "cardinal": "~0.4.2",
@@ -63,7 +63,7 @@
     "elementtree": "~0.1.5"
   },
   "devDependencies": {
-    "chai": "~1.7.2",
-    "mocha": "~1.12.0"
+    "chai": "~1.8.1",
+    "mocha": "~1.14.0"
   }
 }
