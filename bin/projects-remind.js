@@ -2,7 +2,7 @@
 
 exports.command = {
   description: 'a reminder of what you were working on last',
-  arguments: '[timespan]'
+  arguments: '[-n/--number <number>] [timespan]'
 };
 
 if (require.main !== module) {
@@ -21,9 +21,20 @@ var _ = require('lodash');
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
-var program = utilities.programDefaultsParse('remind', '[timespan]');
+var program = utilities.programDefaults('remind',
+  '[-n/--number <number>] [timespan]');
+
+program.option('-n, --number <number>', 'the number of files to show',
+  _.partialRight(parseInt, 10));
+
+program.parse(process.argv);
+program.handleColor();
 
 var timespan = program.args[0];
+
+if (!program.number) {
+  program.number = 10;
+}
 
 var files = {};
 
@@ -67,7 +78,7 @@ storage.setup(function () {
       console.log('Recently changed files:');
       console.log();
 
-      _.first(sortedFiles, 10).forEach(function (file) {
+      _.first(sortedFiles, program.number).forEach(function (file) {
         console.log(utilities.colorizePath(file),
           chalk.gray(moment(files[file]).fromNow(true)));
       });
