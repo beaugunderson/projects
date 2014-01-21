@@ -42,7 +42,7 @@
     "url": "https://github.com/beaugunderson/projects/issues"
   },
   "dependencies": {
-    "request": "~2.30.0",
+    "request": "~2.33.0",
     "lodash": "~2.4.1",
     "async": "~0.2.9",
     "commander": "~2.1.0",
@@ -54,16 +54,16 @@
     "ini": "~1.1.0",
     "helmsman": "git+https://github.com/beaugunderson/node-helmsman.git",
     "dirty-compact": "0.0.1",
-    "glob": "~3.2.7",
+    "glob": "~3.2.8",
     "gift": "0.1.1",
     "underscore.string": "~2.3.3",
     "split": "~0.2.10",
-    "cardinal": "~0.4.2",
-    "has-color": "~0.1.1",
+    "cardinal": "~0.4.4",
+    "has-color": "~0.1.2",
     "elementtree": "~0.1.5"
   },
   "devDependencies": {
     "chai": "~1.8.1",
-    "mocha": "~1.16.2"
+    "mocha": "~1.17.0"
   }
 }
