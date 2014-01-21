@@ -1,7 +1,7 @@
 ## Projects
 
-You're a prolific developer (or you want to be). Manage, keep track of, and show
-off your projects with ease.
+You're a prolific developer (or you want to be). Manage, keep track of, and
+show off your projects with ease.
 
 ### Installation
 
@@ -11,25 +11,25 @@ $ npm install -g projects
 
 ### Commands
 
-| Command        | Description                                                 |
-|----------------|-------------------------------------------------------------|
-| `alias`        | output shell aliases                                        |
-| `clone`        | `git clone` a project                                       |
-| `each`         | run a command in each project directory                     |
-| `edit`         | edit projects files                                         |
-| `gc`           | compact the projects database                               |
-| `get`          | get an attribute for a project                              |
-| `git-status`   | `git status` across all repositories                        |
-| `git-unpushed` | display repositories with unpushed commits                  |
-| `github`       | fill your projects database with your GitHub repositories   |
-| `glob`         | glob across all project directories                         |
-| `info`         | show the JSON for a given project                           |
-| `json-in`      | import your projects from plain JSON                        |
-| `json-out`     | export your projects to plain JSON                          |
-| `open`         | open a project's homepage                                   |
-| `query`        | query your projects                                         |
-| `remind`       | get a reminder of what you were last working on             |
-| `set`          | set an attribute to a given value for a project             |
+| Command        | Description                                                |
+|----------------|------------------------------------------------------------|
+| `alias`        | output shell aliases                                       |
+| `clone`        | `git clone` a project                                      |
+| `each`         | run a command in each project directory                    |
+| `edit`         | edit projects files                                        |
+| `gc`           | compact the projects database                              |
+| `get`          | get an attribute for a project                             |
+| `git-status`   | `git status` across all repositories                       |
+| `git-unpushed` | display repositories with unpushed commits                 |
+| `github`       | fill your projects database with your GitHub repositories  |
+| `glob`         | glob across all project directories                        |
+| `info`         | show the JSON for a given project                          |
+| `json-in`      | import your projects from plain JSON                       |
+| `json-out`     | export your projects to plain JSON                         |
+| `open`         | open a project's homepage                                  |
+| `query`        | query your projects                                        |
+| `remind`       | get a reminder of what you were last working on            |
+| `set`          | set an attribute to a given value for a project            |
 
 ### Writing your own commands
 
@@ -39,8 +39,8 @@ clean/dirty status of all of your checked out git repositories and list the
 dirty ones.
 
 If you have an executable file in your PATH that starts with `projects-` then
-you can execute it underneath projects (and you're encouraged to share them with
-others!)
+you can execute it underneath projects (and you're encouraged to share them
+with others!)
 
 ### Examples
 
