@@ -1,5 +1,7 @@
 #!/usr/bin/env node
+
 'use strict';
+
 exports.command = {
   description: 'list all projects'
 };
@@ -9,31 +11,34 @@ if (require.main !== module) {
 }
 
 var async = require('async');
-var fs = require('fs');
-var util = require('../lib/utilities');
 var chalk = require('chalk');
-var program = require('commander');
+var fs = require('fs');
 var storage = require('../lib/storage.js');
+var utilities = require('../lib/utilities.js');
 
-program._name = 'ls';
+var program = utilities.programDefaults('ls');
+
+program.parse(process.argv);
+program.handleColor();
 
 function list(project, cb) {
-  if (typeof project.directory === 'undefined') {
+  if (!project.directory) {
     console.log(chalk.yellow(project.name));
   } else {
-    fs.existsSync(util.expand(project.directory)) ? 
-      console.log(chalk.green(project.name), chalk.blue.bold(String.fromCharCode(0x2192)), '', chalk.magenta(project.directory)) :
+    if (fs.existsSync(utilities.expand(project.directory))) {
+      console.log(chalk.green(project.name),
+        chalk.blue.bold(String.fromCharCode(0x2192)),
+        chalk.magenta(project.directory));
+    } else {
       console.log(chalk.yellow(project.name));
+    }
   }
+
   cb();
 }
 
-function cd(projects, cb) {
-  async.each(projects, list, function(err){
-    if (!err) return cb();
-  });
-}
-
 storage.setup(function () {
-    cd(storage.all(), process.exit);
+  async.each(storage.all(), list, function () {
+    process.exit();
+  });
 });
