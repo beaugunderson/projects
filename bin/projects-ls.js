@@ -9,6 +9,8 @@ if (require.main !== module) {
 }
 
 var async = require('async');
+var fs = require('fs');
+var util = require('../lib/utilities');
 var chalk = require('chalk');
 var program = require('commander');
 var storage = require('../lib/storage.js');
@@ -19,7 +21,9 @@ function list(project, cb) {
   if (typeof project.directory === 'undefined') {
     console.log(chalk.yellow(project.name));
   } else {
-    console.log(chalk.green(project.name), chalk.blue.bold(String.fromCharCode(0x2192)), '', chalk.magenta(project.directory));
+    fs.existsSync(util.expand(project.directory)) ? 
+      console.log(chalk.green(project.name), chalk.blue.bold(String.fromCharCode(0x2192)), '', chalk.magenta(project.directory)) :
+      console.log(chalk.yellow(project.name));
   }
   cb();
 }
