@@ -29,7 +29,7 @@ program.usage('<project>');
 program.parse(process.argv);
 
 function clone(project, cb) {
-  var directory, repo;
+  var directory;
 
   directory = project.directory ||
     path.join(program.directory || config.projects.directory, project.name);
@@ -54,9 +54,9 @@ function clone(project, cb) {
     storage.updateProject(project.name, { directory: directory }, function () {
       directory = utilities.expand(directory);
 
-      repo = 'git@github.com:' + config.github.username + '/' + project.name;
-      spawn('git', ['clone', repo,  directory], { stdio: 'inherit' }).on('close', cb);
-    });
+      spawn('git',
+        ['clone', project.repository,  directory],
+        { stdio: 'inherit' }).on('close', cb);    });
   });
 }
 
