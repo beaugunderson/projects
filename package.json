@@ -22,6 +22,7 @@
     "projects-info": "./bin/projects-info.js",
     "projects-json-in": "./bin/projects-json-in.js",
     "projects-json-out": "./bin/projects-json-out.js",
+    "projects-ls": "./bin/projects-ls.js",
     "projects-open": "./bin/projects-open.js",
     "projects-query": "./bin/projects-query.js",
     "projects-remind": "./bin/projects-remind.js",
