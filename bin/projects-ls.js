@@ -18,10 +18,18 @@ var utilities = require('../lib/utilities.js');
 
 var program = utilities.programDefaults('ls');
 
+program.option('-1, --onlyName', 'only display the project name');
+
 program.parse(process.argv);
 program.handleColor();
 
 function list(project, cb) {
+  if (program.onlyName) {
+    console.log(project.name);
+
+    return cb();
+  }
+
   if (!project.directory) {
     console.log(chalk.yellow(project.name));
   } else {
