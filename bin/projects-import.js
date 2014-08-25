@@ -11,10 +11,8 @@ if (require.main !== module) {
 var async = require('async');
 var fs = require('fs');
 var Glob = require('glob').Glob;
-var moment = require('moment');
 var path = require('path');
 var exec = require('child_process').exec;
-var _ = require('lodash');
 
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
@@ -49,15 +47,13 @@ var q = async.queue(function (directory, callback) {
       };
 
       if (repository) {
-        _.extend(project, { repository: repository });
+        project.repository = repository;
 
         if (/github/.test(repository)) {
           var matches = RE_GITHUB_HOMEPAGE.exec(repository);
 
           if (matches) {
-            var url = 'https://github.com/' + matches[1];
-
-            _.extend(project, { homepage: url });
+            project.homepage = 'https://github.com/' + matches[1];
           }
         }
       }

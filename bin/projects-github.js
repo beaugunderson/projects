@@ -97,13 +97,16 @@ var getRepositories = exports.getRepositories = function (cb) {
         'User-Agent': 'request'
       },
       qs: qs,
+      headers: {
+        'User-Agent': username
+      },
       json: true
     }, function (err, resp, repositories) {
       repositories = _.map(repositories, function (repo) {
         return _.pick(repo, ATTRIBUTES);
       });
 
-      allRepositories.push.apply(allRepositories, repositories);
+      allRepositories = allRepositories.concat(repositories);
 
       count = repositories.length;
 
