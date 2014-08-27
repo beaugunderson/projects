@@ -70,7 +70,7 @@ storage.setup(function () {
     }
 
     var projects = storage.query({ repository: { $has: true } },
-      { sortBy: function (project) { return project.name.toLowerCase(); } });
+      { sortBy: storage.sortByName });
 
     async.eachSeries(projects, function (project, cbEach) {
       clone(project, cbEach);

@@ -17,8 +17,7 @@ var utilities = require('../lib/utilities.js');
 utilities.programDefaultsParse('git-unpushed');
 
 storage.setup(function () {
-  var projects = storage.query({ directory: { $has: true } },
-    { sortBy: function (project) { return project.name.toLowerCase(); } });
+  var projects = storage.allWithDirectory();
 
   var directories = new utilities.DirectoryEmitter(projects);
 

@@ -52,8 +52,7 @@ function trimArray(array) {
 }
 
 storage.setup(function () {
-  var projects = storage.query({ directory: { $has: true } },
-    { sortBy: function (project) { return project.name.toLowerCase(); } });
+  var projects = storage.allWithDirectory();
 
   var longestName = _.max(projects,
     function (project) { return project.name.length; }).name.length + 2;

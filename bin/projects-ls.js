@@ -23,11 +23,11 @@ program.option('-1, --onlyName', 'only display the project name');
 program.parse(process.argv);
 program.handleColor();
 
-function list(project, cb) {
+function list(project) {
   if (program.onlyName) {
     console.log(project.name);
 
-    return cb();
+    return;
   }
 
   if (!project.directory) {
@@ -35,18 +35,14 @@ function list(project, cb) {
   } else {
     if (fs.existsSync(utilities.expand(project.directory))) {
       console.log(chalk.green(project.name),
-        chalk.blue.bold(String.fromCharCode(0x2192)),
+        chalk.reset.bold('→'),
         chalk.magenta(project.directory));
     } else {
       console.log(chalk.yellow(project.name));
     }
   }
-
-  cb();
 }
 
 storage.setup(function () {
-  async.each(storage.all(), list, function () {
-    process.exit();
-  });
+  storage.all().forEach(list);
 });

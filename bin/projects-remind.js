@@ -58,8 +58,7 @@ var statQueue = async.queue(function (file, cb) {
 }, 10);
 
 storage.setup(function () {
-  var projects = storage.query({ directory: { $has: true } },
-    { sortBy: function (project) { return project.name.toLowerCase(); } });
+  var projects = storage.allWithDirectory();
 
   async.eachSeries(projects, function (project, cbEach) {
     glob(path.join(utilities.expand(project.directory), '**'),

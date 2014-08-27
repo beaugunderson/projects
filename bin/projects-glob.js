@@ -34,8 +34,7 @@ var options = {
 var pattern = program.args.join(' ');
 
 storage.setup(function () {
-  var projects = storage.query({ directory: { $has: true } },
-    { sortBy: function (project) { return project.name.toLowerCase(); } });
+  var projects = storage.allWithDirectory();
 
   async.eachSeries(projects, function (project, cbEach) {
     var glob = new Glob(path.join(utilities.expand(project.directory),

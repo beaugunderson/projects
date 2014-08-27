@@ -22,8 +22,7 @@ var utilities = require('../lib/utilities.js');
 utilities.programDefaultsParse('git-status');
 
 storage.setup(function () {
-  var projects = storage.query({ directory: { $has: true } },
-    { sortBy: function (project) { return project.name.toLowerCase(); } });
+  var projects = storage.allWithDirectory();
 
   async.eachSeries(projects, function (project, cbEach) {
     var repo = gift(utilities.expand(project.directory));

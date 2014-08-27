@@ -101,11 +101,11 @@ function query(term) {
     predicate[attribute] = { $equal: value };
 
     projects = storage.query(predicate,
-      { sortBy: function (project) { return project.name.toLowerCase(); } });
+      { sortBy: storage.sortByName });
   // Search by name
   } else {
     projects = storage.query({ name: { $likeI: term } },
-      { sortBy: function (project) { return project.name.toLowerCase(); } });
+      { sortBy: storage.sortByName });
   }
 
   if (program.alfred) {
