@@ -39,36 +39,61 @@ if (!program.number) {
 var files = {};
 
 var statQueue = async.queue(function (file, cb) {
+  if ((/\/\.git\//).test(file) ||
+      (/node_modules/).test(file)) {
+    return setImmediate(cb);
+  }
+
   fs.stat(file, function (err, stats) {
     // Sometimes there are broken symlinks
     if (err && err.code === 'ENOENT') {
+      return cb();
+    } else if (err && err.code === 'EACCES') {
       return cb();
     } else if (err) {
       return cb(err);
     }
 
-    if (stats.isFile() &&
-      !(/\/\.git\//).test(file) &&
-      !(/node_modules/).test(file)) {
+    if (stats.isFile()) {
       files[file] = stats.mtime;
     }
 
     cb();
   });
-}, 10);
+}, 50);
+
+var globOptions = {
+  dot: true,
+  silent: true,
+  nosort: true
+};
 
 storage.setup(function () {
   var projects = storage.allWithDirectory();
 
-  async.eachSeries(projects, function (project, cbEach) {
-    glob(path.join(utilities.expand(project.directory), '**'),
-      { dot: true }, function (err, results) {
+  statQueue.pause();
 
-      statQueue.push(results);
+  async.each(projects, function (project, cbEach) {
+    var directory = path.join(utilities.expand(project.directory), '**');
+
+    glob(directory, globOptions, function (err, results) {
+      statQueue.push(_.compact(results));
 
       cbEach(err);
+    }).on('error', function (err, meow) {
+      if (err && err.code === 'EACCES') {
+        console.log('Warning: Permission denied globbing', directory, meow);
+      } else {
+        console.log(err);
+      }
     });
-  }, function () {
+  }, function (err) {
+    if (err) {
+      console.error('Aborting, error:', err);
+
+      process.exit(1);
+    }
+
     statQueue.drain = function () {
       var sortedFiles = _.sortBy(_.keys(files), function (file) {
         return -files[file].valueOf();
@@ -82,5 +107,7 @@ storage.setup(function () {
           chalk.gray(moment(files[file]).fromNow(true)));
       });
     };
+
+    statQueue.resume();
   });
 });
