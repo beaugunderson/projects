@@ -1,6 +1,6 @@
 {
   "name": "projects",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "description": "You're a prolific developer (or you want to be). Manage, keep track of, and show off your projects.",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
     "projects-open": "./bin/projects-open.js",
     "projects-query": "./bin/projects-query.js",
     "projects-remind": "./bin/projects-remind.js",
+    "projects-resolve": "./bin/projects-resolve.js",
     "projects-set": "./bin/projects-set.js"
   },
   "preferGlobal": true,
