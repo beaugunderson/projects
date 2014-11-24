@@ -84,3 +84,34 @@ $ p git-unpushed
 node-helmsman: 6 commits ahead of origin
 projects: 3 commits ahead of origin
 ```
+
+You can also use something like [fzf](https://github.com/junegunn/fzf) to make
+selecting a project via the CLI very easy:
+
+```sh
+# cd to a project via fzf
+pd() {
+  cd $(projects ls -1 | fzf | xargs -I {} projects get --porcelain {} directory)
+}
+
+# open a project's URL via fzf
+po() {
+  open $(projects ls -1 | fzf | xargs -I {} projects get --porcelain {} homepage)
+}
+
+# edit a project file with $EDITOR via fzf
+pe() {
+  if PROJECT_DIRECTORY=`projects resolve --relative .`; then
+    FILE=$( find $PROJECT_DIRECTORY -type f \
+      \( ! -path "*/.git/*" \) -and \
+      \( ! -path "*/node_modules/*" \) 2> /dev/null | fzf)
+  else
+    FILE=$(projects glob | \
+      xargs -I {} find {} -type f \
+        \( ! -path "*/.git/*" \) -and \
+        \( ! -path "*/node_modules/*" \) 2> /dev/null | fzf)
+  fi
+
+  [ ! -z "$FILE" ] && $EDITOR $FILE
+}
+```
