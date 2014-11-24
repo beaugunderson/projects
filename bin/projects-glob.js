@@ -49,14 +49,14 @@ storage.setup(function () {
       fs.stat(match, function (err, stats) {
         // Sometimes there are broken symlinks
         if (err && err.code === 'ENOENT') {
-          return console.log(match);
+          return console.log(utilities.contract(match));
         } else if (err) {
           throw err;
         }
 
         if ((stats.isFile() && !program.directories) ||
           (stats.isDirectory() && !program.files)) {
-          console.log(match);
+          console.log(utilities.contract(match));
         }
       });
     });
