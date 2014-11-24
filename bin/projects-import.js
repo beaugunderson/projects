@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
+'use strict';
+
 exports.command = {
-  description: 'fill your projects.db from a directory'
+  description: 'add the specified project directories'
 };
 
 if (require.main !== module) {
@@ -10,7 +12,6 @@ if (require.main !== module) {
 
 var async = require('async');
 var fs = require('fs');
-var Glob = require('glob').Glob;
 var path = require('path');
 var exec = require('child_process').exec;
 
@@ -21,69 +22,68 @@ var RE_GITHUB_HOMEPAGE = /[\/:]([^\/]*?\/[^\/]*?)\.git$/;
 
 var program = utilities.programDefaultsParse('import');
 
-var directory = program.args[0];
-
-if (!directory) {
-  console.error('Please specify a directory/glob pattern.');
+if (!program.args) {
+  console.error('Please specify at least one path');
 
   process.exit(1);
 }
 
-var q = async.queue(function (directory, callback) {
+function addProject(directory, callback) {
   console.log('Importing %s', utilities.expand(directory));
 
   // TODO: Get active status based on last commit
-  exec('git ls-remote --get-url', { cwd: directory },
-    function (err, stdout) {
-      var repository;
+  exec('git ls-remote --get-url', {cwd: directory}, function (err, stdout) {
+    var repository;
 
-      if (!err && stdout) {
-        repository = stdout.trim();
-      }
+    if (!err && stdout) {
+      repository = stdout.trim();
+    }
 
-      var project = {
-        name: path.basename(directory),
-        directory: directory
-      };
+    var project = {
+      name: path.basename(directory),
+      directory: directory
+    };
 
-      if (repository) {
-        project.repository = repository;
+    if (repository) {
+      project.repository = repository;
 
-        if (/github/.test(repository)) {
-          var matches = RE_GITHUB_HOMEPAGE.exec(repository);
+      if (/github/.test(repository)) {
+        var matches = RE_GITHUB_HOMEPAGE.exec(repository);
 
-          if (matches) {
-            project.homepage = 'https://github.com/' + matches[1];
-          }
+        if (matches) {
+          project.homepage = 'https://github.com/' + matches[1];
         }
       }
+    }
 
-      // XXX: Should we attempt to upsert based on the path here first?
-      storage.upsertProject(project.name, project, callback);
-    });
-}, 1);
-
-q.drain = function () {
-  console.log('Done.');
-};
+    // XXX: Should we attempt to upsert based on the path here first?
+    storage.upsertProject(project.name, project, callback);
+  });
+}
 
 storage.setup(function () {
-  console.log('Filling projects from ' + directory);
-
-  var glob = new Glob(directory, {});
-
-  glob.on('match', function (match) {
-    fs.stat(match, function (err, stats) {
+  async.eachSeries(program.args, function (directory, cbEachSeries) {
+    fs.stat(directory, function (err, stats) {
       // Sometimes there are broken symlinks
       if (err && err.code === 'ENOENT') {
-        return console.log(match);
+        return console.log('Ignore broken symlink:', directory);
       } else if (err) {
         throw err;
       }
 
-      if (stats.isDirectory()) {
-        q.push(utilities.expand(match));
+      if (!stats.isDirectory()) {
+        console.log('Ignoring non-directory "%s"', directory);
+
+        return cbEachSeries();
       }
+
+      return addProject(utilities.expand(directory), cbEachSeries);
     });
+  }, function (err) {
+    if (err) {
+      return console.error('Error adding paths:', err);
+    }
+
+    console.log('Done.');
   });
 });
