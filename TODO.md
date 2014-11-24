@@ -16,3 +16,4 @@
 - Get more people to write commands
 - Talk to people about their workflows
 - More workflows for Alfred
+- `projects grep` for grepping (or git grepping) all files in projects
