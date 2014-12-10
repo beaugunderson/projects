@@ -9,6 +9,13 @@ show off your projects with ease.
 $ npm install -g projects
 ```
 
+For autocompletion you can redirect `projects --completion` to a file in
+`~/.bash_completion` (zsh is also supported) or use `projects-modified.sh`
+which also contains a fallback to `_filedir` so that you can still complete
+files and directories (I've opened [an
+issue](https://github.com/f/omelette/issues/4) to get that improvement back
+into omelette, the completion library we use).
+
 ### Commands
 
 | Command        | Description                                                |

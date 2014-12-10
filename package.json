@@ -2,7 +2,6 @@
   "name": "projects",
   "version": "1.2.0",
   "description": "You're a prolific developer (or you want to be). Manage, keep track of, and show off your projects.",
-  "main": "index.js",
   "scripts": {
     "test": "mocha -R spec"
   },
@@ -63,6 +62,7 @@
     "log-buffer": "0.0.3",
     "mkdirp": "~0.5.0",
     "moment": "~2.8.4",
+    "omelette": "^0.3.1",
     "parents": "^1.0.0",
     "progress": "^1.1.8",
     "request": "~2.50.0",

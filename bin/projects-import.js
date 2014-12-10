@@ -3,7 +3,8 @@
 'use strict';
 
 exports.command = {
-  description: 'add the specified project directories'
+  description: 'add the specified project directories',
+  arguments: '<path>'
 };
 
 if (require.main !== module) {
@@ -20,7 +21,7 @@ var utilities = require('../lib/utilities.js');
 
 var RE_GITHUB_HOMEPAGE = /[\/:]([^\/]*?\/[^\/]*?)\.git$/;
 
-var program = utilities.programDefaultsParse('import');
+var program = utilities.programDefaultsParse('import', '<path>');
 
 if (!program.args) {
   console.error('Please specify at least one path');
