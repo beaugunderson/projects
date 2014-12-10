@@ -108,7 +108,10 @@ po() {
 }
 
 # edit a project file with $EDITOR via fzf
-# note: requires gnu find
+# note: requires gnu findutils
+# on OS X you'll want to:
+# `npm install -g ignore-pipe`
+# `brew install findutils --with-default-names`
 pe() {
   FILTERS='-type f '
 
