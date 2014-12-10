@@ -11,11 +11,14 @@ if (require.main !== module) {
 
 var async = require('async');
 var chalk = require('chalk');
+var debug = require('debug')('projects-remind');
 var fs = require('fs');
-var glob = require('glob');
+var Glob = require('glob').Glob;
+var ignore = require('ignore');
 var moment = require('moment');
 var path = require('path');
 var program = require('commander');
+var ProgressBar = require('progress');
 var _ = require('lodash');
 
 var storage = require('../lib/storage.js');
@@ -24,6 +27,7 @@ var utilities = require('../lib/utilities.js');
 var program = utilities.programDefaults('remind',
   '[-n/--number <number>] [timespan]');
 
+program.option('--dot', 'match files beginning with a .');
 program.option('-n, --number <number>', 'the number of files to show',
   _.partialRight(parseInt, 10));
 
@@ -33,81 +37,69 @@ program.handleColor();
 var timespan = program.args[0];
 
 if (!program.number) {
-  program.number = 10;
+  program.number = 15;
 }
 
 var files = {};
 
-var statQueue = async.queue(function (file, cb) {
-  if ((/\/\.git\//).test(file) ||
-      (/node_modules/).test(file)) {
-    return setImmediate(cb);
-  }
-
-  fs.stat(file, function (err, stats) {
-    // Sometimes there are broken symlinks
-    if (err && err.code === 'ENOENT') {
-      return cb();
-    } else if (err && err.code === 'EACCES') {
-      return cb();
-    } else if (err) {
-      return cb(err);
-    }
-
-    if (stats.isFile()) {
-      files[file] = stats.mtime;
-    }
-
-    cb();
-  });
-}, 50);
-
 var globOptions = {
-  dot: true,
+  dot: program.dot,
   silent: true,
-  nosort: true
+  nosort: true,
+  stat: true
+};
+
+var gitIgnore = ignore();
+
+gitIgnore.addIgnoreFile(path.join(process.env.HOME, '.gitignore'));
+
+var gitIgnoreFilter = gitIgnore.createFilter();
+
+function filterMatch(match) {
+  return match.indexOf('/node_modules/') > -1 ||
+         match.indexOf('/.git/') > -1 ||
+         !gitIgnoreFilter(match);
 };
 
 storage.setup(function () {
   var projects = storage.allWithDirectory();
+  var counter = 0;
 
-  statQueue.pause();
+  var bar = new ProgressBar('[:bar] :current/:total :percent :etas', {
+    total: projects.length,
+    clear: true
+  });
 
-  async.each(projects, function (project, cbEach) {
-    var directory = path.join(utilities.expand(project.directory), '**');
+  async.eachSeries(projects, function (project, cbEach) {
+    debug('project %s', project.name);
 
-    glob(directory, globOptions, function (err, results) {
-      statQueue.push(_.compact(results));
+    var globPattern = path.join(utilities.expand(project.directory), '**');
+    var glob = new Glob(globPattern, globOptions);
 
-      cbEach(err);
-    }).on('error', function (err, meow) {
-      if (err && err.code === 'EACCES') {
-        console.log('Warning: Permission denied globbing', directory, meow);
-      } else {
-        console.log(err);
+    glob.on('stat', function (path, stat) {
+      if (filterMatch(path) || stat.isDirectory()) {
+        return;
       }
+
+      files[path] = stat.mtime;
+    });
+
+    glob.on('end', function () {
+      bar.tick();
+
+      cbEach();
     });
   }, function (err) {
-    if (err) {
-      console.error('Aborting, error:', err);
+    var sortedFiles = _.sortBy(_.keys(files), function (file) {
+      return -files[file].valueOf();
+    });
 
-      process.exit(1);
-    }
+    console.log('Recently changed files:');
+    console.log();
 
-    statQueue.drain = function () {
-      var sortedFiles = _.sortBy(_.keys(files), function (file) {
-        return -files[file].valueOf();
-      });
-
-      console.log('Recently changed files:');
-      console.log();
-
-      _.first(sortedFiles, program.number).forEach(function (file) {
-        console.log(utilities.colorizePath(file),
-          chalk.gray(moment(files[file]).fromNow(true)));
-      });
-    };
-
-    statQueue.resume();
+    _.first(sortedFiles, program.number).forEach(function (file) {
+      console.log(utilities.colorizePath(file),
+        chalk.gray(moment(files[file]).fromNow(true)));
+    });
   });
 });

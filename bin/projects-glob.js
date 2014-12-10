@@ -15,6 +15,7 @@ var async = require('async');
 var fs = require('fs');
 var Glob = require('glob').Glob;
 var path = require('path');
+var _ = require('lodash');
 
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
@@ -106,8 +107,6 @@ storage.setup(function () {
       process.exit(1);
     });
 
-    glob.on('end', function () {
-      cbEach();
-    });
+    glob.on('end', _.partial(cbEach, null));
   });
 });
