@@ -1,6 +1,6 @@
 {
   "name": "projects",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "You're a prolific developer (or you want to be). Manage, keep track of, and show off your projects.",
   "scripts": {
     "test": "mocha -R spec"
