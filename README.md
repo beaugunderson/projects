@@ -89,29 +89,52 @@ You can also use something like [fzf](https://github.com/junegunn/fzf) to make
 selecting a project via the CLI very easy:
 
 ```sh
+contract-home() {
+  sed "s|^$HOME|~|"
+}
+
 # cd to a project via fzf
 pd() {
-  cd $(projects ls -1 | fzf | xargs -I {} projects get --porcelain {} directory)
+  cd $(projects ls -1 | \
+    fzf --query="$1" | \
+    xargs -I {} projects get --porcelain "{}" directory)
 }
 
 # open a project's URL via fzf
 po() {
-  open $(projects ls -1 | fzf | xargs -I {} projects get --porcelain {} homepage)
+  open $(projects ls -1 | \
+    fzf --query="$1" | \
+    xargs -I {} projects get --porcelain "{}" homepage)
 }
 
 # edit a project file with $EDITOR via fzf
+# note: requires gnu find
 pe() {
+  FILTERS='-type f '
+
+  # filter out .git and node_modules with -prune to make the find much faster
+  FILTERS+='-not -path \*/.git/\* -prune '
+  FILTERS+='-not -path \*/node_modules/\* -prune '
+
+  ADDITIONAL_FILTERS=$1
+
   if PROJECT_DIRECTORY=`projects resolve --relative .`; then
-    FILE=$( find $PROJECT_DIRECTORY -type f \
-      \( ! -path "*/.git/*" \) -and \
-      \( ! -path "*/node_modules/*" \) 2> /dev/null | fzf)
+    FILE=$(bash -c "find $PROJECT_DIRECTORY \
+      $FILTERS $ADDITIONAL_FILTERS 2> /dev/null" | \
+        ignore-pipe | contract-home | fzf)
   else
-    FILE=$(projects glob | \
-      xargs -I {} find {} -type f \
-        \( ! -path "*/.git/*" \) -and \
-        \( ! -path "*/node_modules/*" \) 2> /dev/null | fzf)
+    FILE=$(projects glob --expand | \
+      xargs -I {} bash -c "find "{}" \
+        $FILTERS $ADDITIONAL_FILTERS 2> /dev/null" | \
+         ignore-pipe | contract-home | fzf)
   fi
 
-  [ ! -z "$FILE" ] && $EDITOR $FILE
+  # bash -c needed to handle tilde expansion
+  [ ! -z "$FILE" ] && bash -c "${EDITOR:-vim} "$FILE""
+}
+
+# edit a project file modified within in the last 7 days
+per() {
+  pe "-mtime -7"
 }
 ```
