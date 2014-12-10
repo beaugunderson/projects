@@ -35,8 +35,9 @@ storage.setup(function () {
   }
 
   if (program.porcelain) {
-    console.log(project[attribute]);
+    console.log(project[attribute] || '');
   } else {
-    console.log('%s:%s: "%s"', project.name, attribute, project[attribute]);
+    console.log('%s:%s: "%s"', project.name, attribute,
+                project[attribute] || '');
   }
 });
