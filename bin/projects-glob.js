@@ -23,6 +23,7 @@ var program = utilities.programDefaults('glob', '<command>');
 
 program.option('--dot', 'match files beginning with a .');
 program.option('-d, --directories', 'only match directories');
+program.option('-e, --expand', 'expand path names');
 program.option('-f, --files', 'only match files');
 program.option('-n, --no-filter', 'don\'t filter .git, node_modules');
 
@@ -62,6 +63,14 @@ if (program.directories) {
   statTest = 'isDirectory';
 }
 
+function printMatch(match) {
+  if (program.expand) {
+    return console.log(utilities.expand(match));
+  }
+
+  console.log(utilities.contract(match));
+}
+
 storage.setup(function () {
   var projects = storage.allWithDirectory();
 
@@ -75,7 +84,7 @@ storage.setup(function () {
           return;
         }
 
-        console.log(utilities.contract(match));
+        printMatch(match);
       });
     }
 
@@ -86,7 +95,7 @@ storage.setup(function () {
         }
 
         if (stat[statTest]()) {
-          console.log(utilities.contract(match));
+          printMatch(match);
         }
       });
     }
