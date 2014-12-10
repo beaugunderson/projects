@@ -31,7 +31,10 @@ storage.setup(function () {
 
   if (project) {
     if (program.relative) {
-      console.log(path.relative(process.cwd(), project.directory));
+      var relativePath = path.relative(process.cwd(), project.directory);
+
+      // Return '.' if we're at the root of the project
+      console.log(relativePath === '' ? '.' : relativePath);
     } else {
       console.log(project.directory);
     }
