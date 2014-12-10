@@ -29,6 +29,9 @@ program.option('-n, --no-headers',
 program.option('-w, --warnings', 'warn on missing directories or directories ' +
   'that are actually files');
 
+program.option('-i, --ignore-empty-output',
+  "don't display projects with no output");
+
 program.parse(process.argv);
 program.handleColor();
 
@@ -62,7 +65,12 @@ storage.setup(function () {
   directories.on('directory', function (directory, project) {
     // TODO: Make less OS X/Ubuntu/bash-centric
     var bash = spawn('bash', ['-c', command],
-      _.extend(spawnOptions, { cwd: directory }));
+      _.extend(spawnOptions, {
+        cwd: directory,
+        env: _.extend(process.env, {
+          PROJECT: project.name
+        })
+      }));
 
     if (program.stdout) {
       bash.on('close', process.exit);
@@ -81,14 +89,14 @@ storage.setup(function () {
         lines = trimArray(lines);
 
         if (lines.length > 1) {
-          console.log(chalk.green(project.name));
-        } else {
-          if (lines.length) {
-            process.stdout.write(chalk.green(_.str.rpad(project.name + ':',
-              longestName)));
-          } else {
-            console.log(chalk.yellow(_.str.rpad(project.name), longestName));
+          if (program.headers) {
+            console.log(chalk.green(project.name));
           }
+        } else if (lines.length === 1 && program.headers) {
+          process.stdout.write(chalk.green(_.str.rpad(project.name + ':',
+            longestName)));
+        } else if (!program.ignoreEmptyOutput && program.headers) {
+          console.log(chalk.yellow(_.str.rpad(project.name, longestName)));
         }
 
         if (lines.length) {
