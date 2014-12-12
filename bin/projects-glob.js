@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict';
+
 exports.command = {
   description: 'glob the files in all projects',
   arguments: '<pattern>'
@@ -12,7 +14,6 @@ if (require.main !== module) {
 require('log-buffer');
 
 var async = require('async');
-var fs = require('fs');
 var Glob = require('glob').Glob;
 var path = require('path');
 var _ = require('lodash');
@@ -27,6 +28,7 @@ program.option('-d, --directories', 'only match directories');
 program.option('-e, --expand', 'expand path names');
 program.option('-f, --files', 'only match files');
 program.option('-n, --no-filter', 'don\'t filter .git, node_modules');
+program.option('-0, --null', 'behave like `find -print0`');
 
 program.parse(process.argv);
 
@@ -47,29 +49,33 @@ if (program.files || program.directories) {
 
 var pattern = program.args.join(' ');
 
-var filterMatch = function (match) {
+var statTest = program.directories ? 'isDirectory' : 'isFile';
+
+var filterMatch = !program.filter ? _.constant() : function (match) {
   return match.indexOf('/node_modules/') > -1 ||
          match.indexOf('/.git/') > -1;
 };
 
-if (program.noFilter) {
-  filterMatch = function () {
-    return false;
-  };
-}
+var printLine = !program.null ? console.log : function (value) {
+  process.stdout.write(value + '\u0000');
+};
 
-var statTest = 'isFile';
-
-if (program.directories) {
-  statTest = 'isDirectory';
-}
-
-function printMatch(match) {
-  if (program.expand) {
-    return console.log(utilities.expand(match));
+function printMatch(match, stat) {
+  if (filterMatch(match)) {
+    return;
   }
 
-  console.log(utilities.contract(match));
+  if (stat && !stat[statTest]()) {
+    return;
+  }
+
+  if (program.expand) {
+    printLine(utilities.expand(match));
+
+    return;
+  }
+
+  printLine(utilities.contract(match));
 }
 
 storage.setup(function () {
@@ -78,31 +84,16 @@ storage.setup(function () {
   async.eachSeries(projects, function (project, cbEach) {
     var globPattern = path.join(utilities.expand(project.directory), pattern);
     var glob = new Glob(globPattern, globOptions);
-
-    if (!program.files && !program.directories) {
-      glob.on('match', function (match) {
-        if (filterMatch(match)) {
-          return;
-        }
-
-        printMatch(match);
-      });
-    }
+    var event = 'match';
 
     if (program.files || program.directories) {
-      glob.on('stat', function (match, stat) {
-        if (filterMatch(match)) {
-          return;
-        }
-
-        if (stat[statTest]()) {
-          printMatch(match);
-        }
-      });
+      event = 'stat';
     }
 
+    glob.on(event, printMatch);
+
     glob.on('error', function (err) {
-      console.log('Error globbing projects:', err);
+      console.error('Error globbing projects:', err);
 
       process.exit(1);
     });
