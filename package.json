@@ -7,7 +7,6 @@
   },
   "bin": {
     "projects": "./bin/projects.js",
-    "projects-alias": "./bin/projects-alias.js",
     "projects-clone": "./bin/projects-clone.js",
     "projects-each": "./bin/projects-each.js",
     "projects-edit": "./bin/projects-edit.js",
