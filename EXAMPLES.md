@@ -50,10 +50,13 @@ Total 38 (delta 18), reused 38 (delta 18)
 ```
 
 Show which functions from [caolan/async](https://github.com/caolan/async) are
-used the most:
+used most often:
 
 ```sh
-$ p glob --files "**/*.js" | xargs egrep -ho "async\.\w+" | sort | uniq -c | sort -n
+$ p glob --expand --files -0 "**/*.js" | \
+  xargs -0 egrep -ho "async\.\w+" | \
+  sort | uniq -c | sort -n
+
    2 async.map
    2 async.mapSeries
    2 async.memoize
@@ -73,7 +76,7 @@ $ p glob --files "**/*.js" | xargs egrep -ho "async\.\w+" | sort | uniq -c | sor
 How many files are in each project?
 
 ```sh
-$ p each "find . -type f -and -not -path \"./.git/*\" -and -not -path \"./node_modules/*\" | wc -l"
+$ p each "find . -type | ignore-pipe | wc -l"
 afterlife:                             26
 alfred-yammer:                          5
 bookbag-me:                            39
