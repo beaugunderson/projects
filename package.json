@@ -64,7 +64,7 @@
     "omelette": "^0.3.1",
     "parents": "^1.0.0",
     "progress": "^1.1.8",
-    "request": "~2.50.0",
+    "request": "~2.51.0",
     "split": "~0.3.2",
     "underscore.string": "~2.4.0"
   },
