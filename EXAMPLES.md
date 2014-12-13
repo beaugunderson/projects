@@ -54,8 +54,8 @@ used most often:
 
 ```sh
 $ p glob --expand --files -0 "**/*.js" | \
-  xargs -0 egrep -ho "async\.\w+" | \
-  sort | uniq -c | sort -n
+    xargs -0 egrep -ho "async\.\w+" | \
+    sort | uniq -c | sort -n
 
    2 async.map
    2 async.mapSeries
