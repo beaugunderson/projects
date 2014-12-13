@@ -1,12 +1,8 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'fill your projects.db from GitHub'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: fill your projects.db from GitHub
 
 var async = require('async');
 var moment = require('moment');

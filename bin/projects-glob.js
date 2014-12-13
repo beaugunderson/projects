@@ -2,14 +2,8 @@
 
 'use strict';
 
-exports.command = {
-  description: 'glob the files in all projects',
-  arguments: '<pattern>'
-};
-
-if (require.main !== module) {
-  return;
-}
+// description: glob the files in all projects
+// arguments: <pattern>
 
 require('log-buffer');
 

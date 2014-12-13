@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'show the JSON for a given project',
-  arguments: '<project>'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: show the JSON for a given project
+// arguments: <project>
 
 var cardinal = require('cardinal');
 
@@ -28,7 +24,7 @@ storage.setup(function () {
   var output = JSON.stringify(project, null, 2);
 
   if (program.hasColor) {
-    console.log(cardinal.highlight(output, { json: true }));
+    console.log(cardinal.highlight(output, {json: true}));
   } else {
     console.log(output);
   }

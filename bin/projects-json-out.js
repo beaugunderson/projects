@@ -1,12 +1,8 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'export your projects to plain JSON'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: export your projects to plain JSON
 
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');

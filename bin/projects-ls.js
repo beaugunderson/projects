@@ -2,15 +2,8 @@
 
 'use strict';
 
-exports.command = {
-  description: 'list all projects'
-};
+// description: list all projects
 
-if (require.main !== module) {
-  return;
-}
-
-var async = require('async');
 var chalk = require('chalk');
 var fs = require('fs');
 var storage = require('../lib/storage.js');

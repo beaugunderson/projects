@@ -1,13 +1,7 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'edit projects\' own files',
-  arguments: 'config|db|database'
-};
-
-if (require.main !== module) {
-  return;
-}
+// description: edit projects' own files
+// arguments: config|db|database
 
 var spawn = require('child_process').spawn;
 
@@ -21,11 +15,11 @@ var file = program.args[0];
 if (file === 'db' || file === 'database') {
   spawn(process.env.EDITOR,
     [paths.DATABASE_FILE],
-    { stdio: 'inherit' }).on('close', process.exit);
+    {stdio: 'inherit'}).on('close', process.exit);
 } else if (file === 'config') {
   spawn(process.env.EDITOR,
     [paths.CONFIG_FILE],
-    { stdio: 'inherit' }).on('close', process.exit);
+    {stdio: 'inherit'}).on('close', process.exit);
 } else {
   program.help();
 }

@@ -1,12 +1,8 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'display repositories with unpushed commits'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: display repositories with unpushed commits
 
 var spawn = require('child_process').spawn;
 var split = require('split');
@@ -22,7 +18,7 @@ storage.setup(function () {
   var directories = new utilities.DirectoryEmitter(projects);
 
   directories.on('directory', function (directory, project) {
-    var git = spawn('git', ['rev-list', 'origin..HEAD'], { cwd: directory });
+    var git = spawn('git', ['rev-list', 'origin..HEAD'], {cwd: directory});
 
     var commits = -1;
 

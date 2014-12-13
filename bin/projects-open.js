@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'open a project\'s homepage',
-  arguments: '<project>'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: open a project's homepage
+// arguments: <project>
 
 var spawn = require('child_process').spawn;
 
@@ -25,6 +21,6 @@ if (!program.args[0]) {
 storage.setup(function () {
   var project = storage.getProjectOrDie(program.args[0]);
 
-  spawn('open', [project.homepage], { stdio: 'inherit' })
+  spawn('open', [project.homepage], {stdio: 'inherit'})
     .on('close', process.exit);
 });

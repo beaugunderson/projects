@@ -1,23 +1,17 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'a reminder of what you were working on last',
-  arguments: '[-n/--number <number>] [timespan]'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: a reminder of what you were working on last
+// arguments: [-n/--number <number>] [timespan]
 
 var async = require('async');
 var chalk = require('chalk');
 var debug = require('debug')('projects-remind');
-var fs = require('fs');
 var Glob = require('glob').Glob;
 var ignore = require('ignore');
 var moment = require('moment');
 var path = require('path');
-var program = require('commander');
 var ProgressBar = require('progress');
 var _ = require('lodash');
 
@@ -59,11 +53,10 @@ function filterMatch(match) {
   return match.indexOf('/node_modules/') > -1 ||
          match.indexOf('/.git/') > -1 ||
          !gitIgnoreFilter(match);
-};
+}
 
 storage.setup(function () {
   var projects = storage.allWithDirectory();
-  var counter = 0;
 
   var bar = new ProgressBar('[:bar] :current/:total :percent :etas', {
     total: projects.length,
@@ -89,7 +82,7 @@ storage.setup(function () {
 
       cbEach();
     });
-  }, function (err) {
+  }, function () {
     var sortedFiles = _.sortBy(_.keys(files), function (file) {
       return -files[file].valueOf();
     });

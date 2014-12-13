@@ -1,12 +1,8 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'git status across all repositories'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: git status across all repositories
 
 var async = require('async');
 var chalk = require('chalk');

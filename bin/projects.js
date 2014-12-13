@@ -2,13 +2,40 @@
 
 'use strict';
 
+var fs = require('fs');
 var helmsman = require('helmsman');
 var omelette = require('omelette');
 var _ = require('lodash');
 
 var storage = require('../lib/storage.js');
 
-var program = helmsman({usePath: true});
+var program = helmsman({
+  usePath: true,
+  fillCommandData: function (commandData, file) {
+    var fileText = fs.readFileSync(file, 'utf8');
+
+    var ARGUMENTS_RE = /arguments:\s+(.*)$/im;
+    var DESCRIPTION_RE = /description:\s+(.*)$/im;
+
+    var argumentMatches = fileText.match(ARGUMENTS_RE);
+    var descriptionMatches = fileText.match(DESCRIPTION_RE);
+
+    if (!argumentMatches && !descriptionMatches) {
+      return null;
+    }
+
+    if (argumentMatches) {
+      commandData.arguments = argumentMatches[1];
+    }
+
+    if (descriptionMatches) {
+      commandData.description = descriptionMatches[1];
+    }
+
+    return commandData;
+  },
+  failOnRequireFail: false
+});
 
 var names = _.keys(program.availableCommands);
 

@@ -2,14 +2,8 @@
 
 'use strict';
 
-exports.command = {
-  description: 'add the specified project directories',
-  arguments: '<path>'
-};
-
-if (require.main !== module) {
-  return;
-}
+// description: add the specified project directories
+// arguments: <path>
 
 var async = require('async');
 var fs = require('fs');

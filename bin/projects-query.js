@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'query your projects',
-  arguments: '[term] | [attribute:value]'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: query your projects
+// arguments: [term] | [attribute:value]
 
 var chalk = require('chalk');
 var _ = require('lodash');
@@ -98,14 +94,14 @@ function query(term) {
 
     var predicate = {};
 
-    predicate[attribute] = { $equal: value };
+    predicate[attribute] = {$equal: value};
 
     projects = storage.query(predicate,
-      { sortBy: storage.sortByName });
+      {sortBy: storage.sortByName});
   // Search by name
   } else {
-    projects = storage.query({ name: { $likeI: term } },
-      { sortBy: storage.sortByName });
+    projects = storage.query({name: {$likeI: term}},
+      {sortBy: storage.sortByName});
   }
 
   if (program.alfred) {

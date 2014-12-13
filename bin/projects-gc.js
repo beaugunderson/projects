@@ -1,12 +1,8 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'compact the projects database'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: compact the projects database
 
 var compact = require('dirty-compact').compact;
 

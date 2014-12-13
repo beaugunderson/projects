@@ -1,12 +1,8 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'import your projects from plain JSON'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: import your projects from plain JSON
 
 var async = require('async');
 

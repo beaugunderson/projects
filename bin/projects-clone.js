@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: '`git clone` a project',
-  arguments: '<project>'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: `git clone` a project
+// arguments: <project>
 
 var async = require('async');
 var chalk = require('chalk');
@@ -51,12 +47,12 @@ function clone(project, cb) {
 
     // Store the directory we resolved for the project in its entry for use by
     // other scripts
-    storage.updateProject(project.name, { directory: directory }, function () {
+    storage.updateProject(project.name, {directory: directory}, function () {
       directory = utilities.expand(directory);
 
       spawn('git',
-        ['clone', project.repository,  directory],
-        { stdio: 'inherit' }).on('close', cb);
+        ['clone', project.repository, directory],
+        {stdio: 'inherit'}).on('close', cb);
     });
   });
 }
@@ -69,8 +65,8 @@ storage.setup(function () {
       process.exit(1);
     }
 
-    var projects = storage.query({ repository: { $has: true } },
-      { sortBy: storage.sortByName });
+    var projects = storage.query({repository: {$has: true}},
+      {sortBy: storage.sortByName});
 
     async.eachSeries(projects, function (project, cbEach) {
       clone(project, cbEach);

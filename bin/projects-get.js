@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'get an attribute for a project',
-  arguments: '<project> <attribute>'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: get an attribute for a project
+// arguments: <project> <attribute>
 
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');

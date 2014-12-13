@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'run a command in each project directory',
-  arguments: '<command>'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: run a command in each project directory
+// arguments: <command>
 
 var chalk = require('chalk');
 var spawn = require('child_process').spawn;

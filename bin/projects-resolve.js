@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
-exports.command = {
-  description: 'resolve a path to a project',
-  arguments: '<path>'
-};
+'use strict';
 
-if (require.main !== module) {
-  return;
-}
+// description: resolve a path to a project
+// arguments: <path>
 
 var path = require('path');
 var storage = require('../lib/storage.js');
