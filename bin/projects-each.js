@@ -10,7 +10,8 @@ var spawn = require('child_process').spawn;
 var split = require('split');
 var _ = require('lodash');
 
-_.str = require('underscore.string');
+_.mixin(require('lodash-deep'));
+_.mixin(require('underscore.string'));
 
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
@@ -52,13 +53,14 @@ function trimArray(array) {
 
 storage.setup(function () {
   var projects = storage.allWithDirectory();
-
-  var longestName = _.max(projects,
-    function (project) { return project.name.length; }).name.length + 2;
+  var padding = _.max(_.deepPluck(projects, 'name.length')) + 2;
 
   var directories = new utilities.DirectoryEmitter(projects);
 
   directories.on('directory', function (directory, project) {
+    // TODO: These return in the order finished, it might be worth it to add a
+    // queue so that results only print after the items before them
+    // (alphabetically) but still run in parallel
     // TODO: Make less OS X/Ubuntu/bash-centric
     var bash = spawn('bash', ['-c', command],
       _.extend(spawnOptions, {
@@ -77,10 +79,11 @@ storage.setup(function () {
         lines.push(line);
       });
 
-      // We display things one of three ways--if there was only one line of
-      // output we print it on the same line as the project name; if there was
-      // more than one line we print it underneath, and if there were no lines
-      // of output we print the project name in yellow.
+      // Display things one of three ways:
+      //
+      // - if there was one line of output print everything on one line
+      // - if there was more than one line print it underneath the name
+      // - if there were no lines of output print the project name in yellow
       bash.on('close', function () {
         lines = trimArray(lines);
 
@@ -89,10 +92,10 @@ storage.setup(function () {
             console.log(chalk.green(project.name));
           }
         } else if (lines.length === 1 && program.headers) {
-          process.stdout.write(chalk.green(_.str.rpad(project.name + ':',
-            longestName)));
+          process.stdout.write(chalk.green(_.rpad(project.name + ':',
+            padding)));
         } else if (!program.ignoreEmptyOutput && program.headers) {
-          console.log(chalk.yellow(_.str.rpad(project.name, longestName)));
+          console.log(chalk.yellow(_.rpad(project.name, padding)));
         }
 
         if (lines.length) {
