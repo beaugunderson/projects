@@ -25,18 +25,16 @@ if (!program.args[0]) {
 storage.setup(function () {
   var project = storage.getProjectByDirectory(program.args[0]);
 
-  if (project) {
-    if (program.relative) {
-      var relativePath = path.relative(process.cwd(), project.directory);
-
-      // Return '.' if we're at the root of the project
-      console.log(relativePath === '' ? '.' : relativePath);
-    } else {
-      console.log(project.directory);
-    }
-
-    process.exit(0);
+  if (!project) {
+    process.exit(1);
   }
 
-  process.exit(1);
+  if (program.relative) {
+    var relativePath = path.relative(process.cwd(), project.directory);
+
+    // Return '.' if we're at the root of the project
+    console.log(relativePath === '' ? '.' : relativePath);
+  } else {
+    console.log(project.directory);
+  }
 });

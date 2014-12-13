@@ -25,14 +25,12 @@ function list(project) {
 
   if (!project.directory) {
     console.log(chalk.yellow(project.name));
+  } else if (fs.existsSync(utilities.expand(project.directory))) {
+    console.log(chalk.green(project.name),
+      chalk.reset.bold('→'),
+      chalk.magenta(project.directory));
   } else {
-    if (fs.existsSync(utilities.expand(project.directory))) {
-      console.log(chalk.green(project.name),
-        chalk.reset.bold('→'),
-        chalk.magenta(project.directory));
-    } else {
-      console.log(chalk.yellow(project.name));
-    }
+    console.log(chalk.yellow(project.name));
   }
 }
 

@@ -28,7 +28,7 @@ program.option('-n, --number <number>', 'the number of files to show',
 program.parse(process.argv);
 program.handleColor();
 
-var timespan = program.args[0];
+// var timespan = program.args[0];
 
 if (!program.number) {
   program.number = 15;

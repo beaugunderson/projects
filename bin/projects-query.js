@@ -37,21 +37,21 @@ function formatRole(project) {
 function outputProjectsAlfred(projects) {
   var et = require('elementtree');
 
-  var root = et.Element('items');
+  var root = new et.Element('items');
 
   projects.forEach(function (project) {
-    var item = et.SubElement(root, 'item');
+    var item = new et.SubElement(root, 'item');
 
     item.set('uid', project.name);
     item.set('arg', project.name);
     item.set('valid', 'YES');
     item.set('autocomplete', project.name);
 
-    var title = et.SubElement(item, 'title');
+    var title = new et.SubElement(item, 'title');
     title.text = project.name;
 
     if (project.description) {
-      var subtitle = et.SubElement(item, 'subtitle');
+      var subtitle = new et.SubElement(item, 'subtitle');
       subtitle.text = project.description;
     }
   });
