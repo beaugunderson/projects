@@ -2,6 +2,7 @@
 
 'use strict';
 
+var debug = require('debug')('projects');
 var fs = require('fs');
 var helmsman = require('helmsman');
 
@@ -10,7 +11,13 @@ var completion = require('../lib/completion.js');
 var program = helmsman({
   usePath: true,
   fillCommandData: function (commandData, file) {
-    var fileText = fs.readFileSync(file, 'utf8');
+    var fileText = '';
+
+    try {
+      fileText = fs.readFileSync(file, 'utf8');
+    } catch (e) {
+      debug('unable to read %s', file);
+    }
 
     var ARGUMENTS_RE = /arguments:\s+(.*)$/im;
     var DESCRIPTION_RE = /description:\s+(.*)$/im;
