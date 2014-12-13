@@ -26,7 +26,7 @@ storage.setup(function () {
 
   updates[attribute] = value;
 
-  storage.updateProjectOrDie(name, updates, function (err, project) {
+  storage.updateProjectOrDie(name, updates, function (project) {
     console.log('Set %s:%s to "%s"', project.name, attribute, value);
   });
 });
