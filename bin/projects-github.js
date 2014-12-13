@@ -89,9 +89,6 @@ var getRepositories = exports.getRepositories = function (cb) {
 
     request.get({
       url: url,
-      headers: {
-        'User-Agent': 'request'
-      },
       qs: qs,
       headers: {
         'User-Agent': username
