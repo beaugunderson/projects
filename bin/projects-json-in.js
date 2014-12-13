@@ -5,6 +5,7 @@
 // description: import your projects from plain JSON
 
 var async = require('async');
+var stdin = require('get-stdin');
 
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
@@ -12,20 +13,12 @@ var utilities = require('../lib/utilities.js');
 utilities.programDefaultsParse('json-in');
 
 storage.setup(function () {
-  process.stdin.resume();
-  process.stdin.setEncoding('utf8');
-
-  var json = '';
-
-  process.stdin.on('data', function (chunk) {
-    json += chunk;
-  });
-
-  process.stdin.on('end', function () {
+  stdin(function (data) {
     var projects;
 
+    // TODO: create tryParse utility function
     try {
-      projects = JSON.parse(json);
+      projects = JSON.parse(data);
     } catch (e) {
       console.error('Failed to parse:', e);
 
