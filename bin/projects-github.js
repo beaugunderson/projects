@@ -36,7 +36,7 @@ var GITHUB_URL_MAPPINGS = {
   ssh: 'ssh_url'
 };
 
-var SIX_MONTHS_AGO = moment().subtract('months', 6);
+var SIX_MONTHS_AGO = moment().subtract(6, 'months');
 
 var GITHUB_BASE_URL = 'https://api.github.com';
 
