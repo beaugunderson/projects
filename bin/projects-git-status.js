@@ -37,10 +37,10 @@ storage.setup(function () {
           color = chalk.red;
         } else if (status.type) {
           if (status.staged) {
-            letter = _.str.rpad(status.type, 2);
+            letter = _.padRight(status.type, 2);
             color = chalk.yellow;
           } else {
-            letter = _.str.lpad(status.type, 2);
+            letter = _.padLeft(status.type, 2);
 
             if (status.type === 'M') {
               color = chalk.green;

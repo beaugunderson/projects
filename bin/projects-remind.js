@@ -90,7 +90,7 @@ storage.setup(function () {
     console.log('Recently changed files:');
     console.log();
 
-    _.first(sortedFiles, program.number).forEach(function (file) {
+    _.take(sortedFiles, program.number).forEach(function (file) {
       console.log(utilities.colorizePath(file),
         chalk.gray(moment(files[file]).fromNow(true)));
     });

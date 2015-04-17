@@ -11,7 +11,6 @@ var split = require('split');
 var _ = require('lodash');
 
 _.mixin(require('lodash-deep'));
-_.mixin(require('underscore.string'));
 
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
@@ -92,10 +91,10 @@ storage.setup(function () {
             console.log(chalk.green(project.name));
           }
         } else if (lines.length === 1 && program.headers) {
-          process.stdout.write(chalk.green(_.rpad(project.name + ':',
+          process.stdout.write(chalk.green(_.padRight(project.name + ':',
             padding)));
         } else if (!program.ignoreEmptyOutput && program.headers) {
-          console.log(chalk.yellow(_.rpad(project.name, padding)));
+          console.log(chalk.yellow(_.padRight(project.name, padding)));
         }
 
         if (lines.length) {
