@@ -23,7 +23,7 @@ storage.setup(function () {
 
   var output = JSON.stringify(project, null, 2);
 
-  if (program.hasColor) {
+  if (program.supportsColor) {
     console.log(cardinal.highlight(output, {json: true}));
   } else {
     console.log(output);
