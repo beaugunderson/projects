@@ -23,35 +23,35 @@ storage.setup(function () {
   async.eachSeries(projects, function (project, cbEach) {
     var repo = gift(utilities.expand(project.directory));
 
-    repo.status(function (err, status) {
-      if (status.clean) {
+    repo.status(function (err, repoStatus) {
+      if (repoStatus.clean) {
         return cbEach();
       }
 
-      _.each(status.files, function (status, file) {
+      _.each(repoStatus.files, function (status, file) {
         var letter;
-        var color;
+        var colorFn;
 
         if (!status.tracked) {
           letter = '??';
-          color = chalk.red;
+          colorFn = chalk.red;
         } else if (status.type) {
           if (status.staged) {
             letter = _.padRight(status.type, 2);
-            color = chalk.yellow;
+            colorFn = chalk.yellow;
           } else {
             letter = _.padLeft(status.type, 2);
 
             if (status.type === 'M') {
-              color = chalk.green;
+              colorFn = chalk.green;
             } else if (status.type === 'D') {
-              color = chalk.red;
+              colorFn = chalk.red;
             }
           }
         }
 
         console.log(letter, utilities.colorizePath(path.join(project.directory,
-          file), color));
+          file), colorFn));
       });
 
       cbEach(err);
