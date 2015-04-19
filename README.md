@@ -1,7 +1,6 @@
 ## Projects
 
-You're a prolific developer (or you want to be). Manage, keep track of, and
-show off your projects with ease.
+Project management for power users.
 
 ### Installation
 
