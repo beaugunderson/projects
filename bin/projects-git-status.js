@@ -10,8 +10,6 @@ var gift = require('gift');
 var path = require('path');
 var _ = require('lodash');
 
-_.str = require('underscore.string');
-
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
