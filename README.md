@@ -9,6 +9,34 @@ show off your projects with ease.
 $ npm install -g projects
 ```
 
+### Quickstart
+
+If the majority of your projects are subdirectories of one folder then the
+easiest way to get started is this (in my case my projects live underneath
+`~/p/`):
+
+```sh
+$ npm install -g projects
+$ echo "alias p=projects" >> ~/.bashrc
+$ source ~/.bashrc
+$ vim ~/.config/projects
+
+# edit like so (note: this file will probably become JSON soon!)
+[github]
+username = beaugunderson
+
+[projects]
+directory = ~/p
+
+$ p import ~/p/*
+$ p github  # if you want to import metadata about your GitHub projects too
+```
+
+Try `p remind`, `p git-status`, `p git-unpushed`, and `p not-git` for examples
+of the time savings and management functionality I'm trying to enable.
+
+### Shell completion
+
 For autocompletion you can redirect `projects --completion` to a file in
 `~/.bash_completion` (zsh is also supported) or use `projects-modified.sh`
 which also contains a fallback to `_filedir` so that you can still complete
@@ -30,10 +58,13 @@ into omelette, the completion library we use).
 | `git-unpushed` | display repositories with unpushed commits                 |
 | `github`       | fill your projects database with your GitHub repositories  |
 | `glob`         | glob across all project directories                        |
+| `import`       | import a directory into projects                           |
 | `info`         | show the JSON for a given project                          |
 | `json-in`      | import your projects from plain JSON                       |
 | `json-out`     | export your projects to plain JSON                         |
+| `ls`           | list your porojects                                        |
 | `open`         | open a project's homepage                                  |
+| `not-git`      | list projects not in git                                   |
 | `query`        | query your projects                                        |
 | `remind`       | get a reminder of what you were last working on            |
 | `set`          | set an attribute to a given value for a project            |
