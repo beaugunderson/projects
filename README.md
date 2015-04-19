@@ -35,6 +35,10 @@ $ p github  # if you want to import metadata about your GitHub projects too
 Try `p remind`, `p git-status`, `p git-unpushed`, and `p not-git` for examples
 of the time savings and management functionality I'm trying to enable.
 
+Note that the color scheme currently assumes a dark background; if you find it
+hard to read try `DISABLE_COLOR=true` in your environment (a revamp of all
+colors is coming in the next version).
+
 ### Shell completion
 
 For autocompletion you can redirect `projects --completion` to a file in
