@@ -2,8 +2,6 @@
 
 'use strict';
 
-require('epipebomb');
-
 var debug = require('debug')('projects');
 var fs = require('fs');
 var helmsman = require('helmsman');
