@@ -10,8 +10,6 @@ var spawn = require('child_process').spawn;
 var split = require('split');
 var _ = require('lodash');
 
-_.mixin(require('lodash-deep'));
-
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
@@ -28,10 +26,18 @@ program.option('-w, --warnings', 'warn on missing directories or directories ' +
 program.option('-i, --ignore-empty-output',
   "don't display projects with no output");
 
+program.option('-a, --always-indent', 'always pad output to longest name');
+
 program.parse(process.argv);
 program.handleColor();
 
 var command = program.args[0];
+
+if (!command) {
+  console.error('Please specify a command.');
+
+  process.exit(1);
+}
 
 var spawnOptions = {};
 
@@ -52,7 +58,7 @@ function trimArray(array) {
 
 storage.setup(function () {
   var projects = storage.allWithDirectory();
-  var padding = _.max(_.deepPluck(projects, 'name.length')) + 2;
+  var padding = utilities.longestNameLength(projects) + 1;
 
   var directories = new utilities.DirectoryEmitter(projects);
 
@@ -88,21 +94,40 @@ storage.setup(function () {
 
         if (lines.length > 1) {
           if (program.headers) {
-            console.log(chalk.green(project.name));
+            if (program.alwaysIndent) {
+              process.stdout.write(chalk.green(_.padRight(project.name,
+                padding)));
+            } else {
+              console.log(chalk.green(project.name));
+            }
           }
         } else if (lines.length === 1 && program.headers) {
-          process.stdout.write(chalk.green(_.padRight(project.name + ':',
+          process.stdout.write(chalk.green(_.padRight(project.name,
             padding)));
         } else if (!program.ignoreEmptyOutput && program.headers) {
           console.log(chalk.yellow(_.padRight(project.name, padding)));
         }
 
-        if (lines.length) {
-          console.log(lines.join('\n'));
-        }
+        if (program.alwaysIndent) {
+          if (!lines.length) {
+            return;
+          }
 
-        if (lines.length > 1) {
-          console.log();
+          console.log(_.first(lines));
+
+          if (lines.length > 1) {
+            console.log(_.rest(lines).map(function (line) {
+              return _.padRight(' ', padding) + line;
+            }).join('\n'));
+          }
+        } else {
+          if (lines.length) {
+            console.log(lines.join('\n'));
+          }
+
+          if (lines.length > 1) {
+            console.log();
+          }
         }
       });
     }
