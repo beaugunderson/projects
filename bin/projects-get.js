@@ -14,13 +14,13 @@ program.option('-p, --porcelain', 'Get the value in a machine-readable way');
 
 program.parse(process.argv);
 
+if (program.args.length !== 2) {
+  console.error('Please specify a project and attribute.');
+
+  process.exit(1);
+}
+
 storage.setup(function () {
-  if (program.args.length !== 2) {
-    console.error('Please specify a project and attribute.');
-
-    process.exit(1);
-  }
-
   var name = program.args[0];
   var attribute = program.args[1];
 
