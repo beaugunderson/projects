@@ -7,14 +7,14 @@
 
 var async = require('async');
 var chalk = require('chalk');
+var config = require('../lib/config.js');
 var fs = require('fs');
 var path = require('path');
-var spawn = require('child_process').spawn;
-
-var config = require('../lib/config.js');
 var paths = require('../lib/paths.js');
+var spawn = require('child_process').spawn;
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
+var _ = require('lodash');
 
 var program = utilities.programDefaults('clone', '<project>');
 
@@ -57,6 +57,33 @@ function clone(project, cb) {
   });
 }
 
+function cloneSeries(projects, cb) {
+  async.eachSeries(projects, function (project, cbEach) {
+    clone(project, cbEach);
+  }, function (err) {
+    if (err) {
+      console.error('Error cloning projects:', err);
+    }
+
+    if (cb) {
+      cb(err);
+    }
+  });
+}
+
+function collectProjects(names) {
+  _(names).map(function (name) {
+    if (name.indexOf('*') !== -1) {
+      return storage.minimatch(name);
+    }
+
+    return storage.getProjectOrDie(name);
+  })
+  .flatten()
+  .uniq(_.pluck('name'))
+  .valueOf();
+}
+
 storage.setup(function () {
   if (program.all) {
     if (program.directory) {
@@ -68,24 +95,14 @@ storage.setup(function () {
     var projects = storage.query({repository: {$has: true}},
       {sortBy: storage.sortByName});
 
-    async.eachSeries(projects, function (project, cbEach) {
-      clone(project, cbEach);
-    }, function (err) {
-      if (err) {
-        console.error('Error cloning projects:', err);
-      }
-    });
+    cloneSeries(projects, process.exit);
   } else {
-    var name = program.args[0];
-
-    if (!name) {
+    if (!program.args.length) {
       console.error('Please specify a project.');
 
       process.exit(1);
     }
 
-    var project = storage.getProjectOrDie(name);
-
-    clone(project, process.exit);
+    cloneSeries(collectProjects(program.args), process.exit);
   }
 });
