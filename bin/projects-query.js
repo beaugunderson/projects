@@ -5,7 +5,6 @@
 // description: query your projects
 // arguments: [term] | [attribute:value]
 
-var chalk = require('chalk');
 var _ = require('lodash');
 
 var storage = require('../lib/storage.js');
@@ -21,17 +20,17 @@ program.option('-a, --alfred',
 program.parse(process.argv);
 program.handleColor();
 
-// TODO: Think about colors and display
-var projectName = chalk.bold;
+var theme = program.theme;
+var projectName = theme.bold;
 
 function formatStatus(project) {
-  return project.status === 'active' ? chalk.green(project.status) :
-    chalk.red(project.status);
+  return project.status === 'active' ? theme.green(project.status) :
+    theme.red(project.status);
 }
 
 function formatRole(project) {
-  return project.role === 'creator' ? chalk.green(project.role) :
-    chalk.gray(project.role);
+  return project.role === 'creator' ? theme.green(project.role) :
+    theme.gray(project.role);
 }
 
 function outputProjectsAlfred(projects) {

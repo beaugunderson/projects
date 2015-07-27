@@ -6,7 +6,6 @@
 // arguments: <project>
 
 var async = require('async');
-var chalk = require('chalk');
 var config = require('../lib/config.js');
 var fs = require('fs');
 var path = require('path');
@@ -24,6 +23,8 @@ program.option('-d, --directory', 'the directory to clone into');
 program.parse(process.argv);
 program.handleColor();
 
+var theme = program.theme;
+
 function clone(project, cb) {
   var directory;
 
@@ -39,7 +40,7 @@ function clone(project, cb) {
 
   fs.exists(utilities.expand(directory), function (exists) {
     if (exists) {
-      console.warn(chalk.yellow('The path "%s" already exists, skipping.'),
+      console.warn(theme.bad('The path "%s" already exists, skipping.'),
         directory);
 
       return cb();

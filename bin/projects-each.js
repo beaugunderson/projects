@@ -5,7 +5,6 @@
 // description: run a command in each project directory
 // arguments: <command>
 
-var chalk = require('chalk');
 var spawn = require('child_process').spawn;
 var split = require('split');
 var _ = require('lodash');
@@ -30,6 +29,8 @@ program.option('-a, --always-indent', 'always pad output to longest name');
 
 program.parse(process.argv);
 program.handleColor();
+
+var theme = program.theme;
 
 var command = program.args[0];
 
@@ -95,17 +96,17 @@ storage.setup(function () {
         if (lines.length > 1) {
           if (program.headers) {
             if (program.alwaysIndent) {
-              process.stdout.write(chalk.green(_.padRight(project.name,
+              process.stdout.write(theme.good(_.padRight(project.name,
                 padding)));
             } else {
-              console.log(chalk.green(project.name));
+              console.log(theme.good(project.name));
             }
           }
         } else if (lines.length === 1 && program.headers) {
-          process.stdout.write(chalk.green(_.padRight(project.name,
+          process.stdout.write(theme.good(_.padRight(project.name,
             padding)));
         } else if (!program.ignoreEmptyOutput && program.headers) {
-          console.log(chalk.yellow(_.padRight(project.name, padding)));
+          console.log(theme.neutral(_.padRight(project.name, padding)));
         }
 
         if (program.alwaysIndent) {
@@ -135,11 +136,11 @@ storage.setup(function () {
 
   if (program.warnings) {
     directories.on('missing', function (directory) {
-      console.warn(chalk.yellow(directory, 'is missing.'));
+      console.warn(theme.bad(directory, 'is missing.'));
     });
 
     directories.on('file', function (directory) {
-      console.warn(chalk.yellow(directory, 'is a file, not a directory.'));
+      console.warn(theme.bad(directory, 'is a file, not a directory.'));
     });
   }
 

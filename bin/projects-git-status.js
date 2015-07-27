@@ -5,7 +5,6 @@
 // description: git status across all repositories
 
 var async = require('async');
-var chalk = require('chalk');
 var gift = require('gift');
 var path = require('path');
 var _ = require('lodash');
@@ -13,7 +12,8 @@ var _ = require('lodash');
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
-utilities.programDefaultsParse('git-status');
+var program = utilities.programDefaultsParse('git-status');
+var theme = program.theme;
 
 storage.setup(function () {
   var projects = storage.allWithDirectory();
@@ -32,18 +32,18 @@ storage.setup(function () {
 
         if (!status.tracked) {
           letter = '??';
-          colorFn = chalk.red;
+          colorFn = theme.red;
         } else if (status.type) {
           if (status.staged) {
             letter = _.padRight(status.type, 2);
-            colorFn = chalk.yellow;
+            colorFn = theme.yellow;
           } else {
             letter = _.padLeft(status.type, 2);
 
             if (status.type === 'M') {
-              colorFn = chalk.green;
+              colorFn = theme.green;
             } else if (status.type === 'D') {
-              colorFn = chalk.red;
+              colorFn = theme.red;
             }
           }
         }

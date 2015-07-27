@@ -2,6 +2,11 @@
 
 'use strict';
 
+// TODO: this breaks anything that parses the output so we'll only want to do
+// it if the output is going to a terminal (it also doesn't set the title
+// entirely correctly in iTerm 2)
+// process.stdout.write('\x1b]0;projects\x07');
+
 var debug = require('debug')('projects');
 var fs = require('fs');
 var helmsman = require('helmsman');

@@ -6,7 +6,6 @@
 // arguments: [-n/--number <number>] [timespan]
 
 var async = require('async');
-var chalk = require('chalk');
 var debug = require('debug')('projects-remind');
 var Glob = require('glob').Glob;
 var ignore = require('ignore');
@@ -92,7 +91,7 @@ storage.setup(function () {
 
     _.take(sortedFiles, program.number).forEach(function (file) {
       console.log(utilities.colorizePath(file),
-        chalk.gray(moment(files[file]).fromNow(true)));
+        program.theme.dim(moment(files[file]).fromNow(true)));
     });
   });
 });
