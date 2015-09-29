@@ -13,7 +13,6 @@ var paths = require('../lib/paths.js');
 var spawn = require('child_process').spawn;
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
-var _ = require('lodash');
 
 var program = utilities.programDefaults('clone', '<project>');
 
@@ -46,6 +45,13 @@ function clone(project, cb) {
       return cb();
     }
 
+    if (!project.repository) {
+      console.warn(theme.bad('Project "%s" has no repository, skipping.'),
+        project.name);
+
+      return cb();
+    }
+
     // Store the directory we resolved for the project in its entry for use by
     // other scripts
     storage.updateProject(project.name, {directory: directory}, function () {
@@ -66,23 +72,8 @@ function cloneSeries(projects, cb) {
       console.error('Error cloning projects:', err);
     }
 
-    if (cb) {
-      cb(err);
-    }
+    cb(err);
   });
-}
-
-function collectProjects(names) {
-  _(names).map(function (name) {
-    if (name.indexOf('*') !== -1) {
-      return storage.minimatch(name);
-    }
-
-    return storage.getProjectOrDie(name);
-  })
-  .flatten()
-  .uniq(_.pluck('name'))
-  .valueOf();
 }
 
 storage.setup(function () {
@@ -104,6 +95,6 @@ storage.setup(function () {
       process.exit(1);
     }
 
-    cloneSeries(collectProjects(program.args), process.exit);
+    cloneSeries(storage.getProjectOrProjectsOrDie(program.args), process.exit);
   }
 });
