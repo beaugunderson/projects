@@ -76,7 +76,7 @@ $ p glob --expand --files -0 "**/*.js" | \
 How many files are in each project?
 
 ```sh
-$ p each "find . -type | ignore-pipe | wc -l"
+$ p each "find . -type f | ignore-pipe | wc -l"
 afterlife:                             26
 alfred-yammer:                          5
 bookbag-me:                            39
