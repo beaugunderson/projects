@@ -94,8 +94,9 @@ $ p glob --files "**" | wc -l
    10476
 ```
 
-What were the last two commits (in the last year) for each project?
+What were the last two commits (in the last three months) for each project
+authored by me?
 
 ```sh
-$ p each -a -i 'git log --pretty=format:"%<(14,trunc)%cr %Cred%<(15,trunc)%an%Creset %h %Cgreen%<(50,trunc)%s%Creset" -n 2 --since=1.year'
+$ p each -a 'git log --pretty=format:"%<(14,trunc)%cr %Cred%<(15,trunc)%an%Creset %h %Cgreen%<(50,trunc)%s%Creset" -n 2 --since=3.month --author=Beau'
 ```
