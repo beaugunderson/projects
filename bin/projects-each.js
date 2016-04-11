@@ -22,8 +22,7 @@ program.option('-n, --no-headers',
 program.option('-w, --warnings', 'warn on missing directories or directories ' +
   'that are actually files');
 
-program.option('-i, --ignore-empty-output',
-  "don't display projects with no output");
+program.option('-d, --display-no-output', 'display projects with no output');
 
 program.option('-a, --always-indent', 'always pad output to longest name');
 
@@ -105,7 +104,7 @@ storage.setup(function () {
         } else if (lines.length === 1 && program.headers) {
           process.stdout.write(theme.good(_.padRight(project.name,
             padding)));
-        } else if (!program.ignoreEmptyOutput && program.headers) {
+        } else if (program.displayEmptyOutput && program.headers) {
           console.log(theme.neutral(_.padRight(project.name, padding)));
         }
 
