@@ -24,7 +24,7 @@ function list(project, maxLength) {
     return;
   }
 
-  project.name = _.padRight(project.name, maxLength);
+  project.name = _.padEnd(project.name, maxLength);
 
   if (!project.directory) {
     console.log(theme.neutral(project.name));

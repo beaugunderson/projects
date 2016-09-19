@@ -7,6 +7,7 @@
 
 var async = require('async');
 var debug = require('debug')('projects-remind');
+var fs = require('fs');
 var Glob = require('glob').Glob;
 var ignore = require('ignore');
 var moment = require('moment');
@@ -43,8 +44,11 @@ var globOptions = {
 };
 
 var gitIgnore = ignore();
+var ignorePath = path.join(process.env.HOME, '.gitignore');
 
-gitIgnore.addIgnoreFile(path.join(process.env.HOME, '.gitignore'));
+if (fs.existsSync(ignorePath)) {
+  gitIgnore.add(fs.readFileSync(ignorePath).toString());
+}
 
 var gitIgnoreFilter = gitIgnore.createFilter();
 

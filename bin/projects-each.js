@@ -95,17 +95,17 @@ storage.setup(function () {
         if (lines.length > 1) {
           if (program.headers) {
             if (program.alwaysIndent) {
-              process.stdout.write(theme.good(_.padRight(project.name,
+              process.stdout.write(theme.good(_.padEnd(project.name,
                 padding)));
             } else {
               console.log(theme.good(project.name));
             }
           }
         } else if (lines.length === 1 && program.headers) {
-          process.stdout.write(theme.good(_.padRight(project.name,
+          process.stdout.write(theme.good(_.padEnd(project.name,
             padding)));
         } else if (program.displayEmptyOutput && program.headers) {
-          console.log(theme.neutral(_.padRight(project.name, padding)));
+          console.log(theme.neutral(_.padEnd(project.name, padding)));
         }
 
         if (program.alwaysIndent) {
@@ -117,7 +117,7 @@ storage.setup(function () {
 
           if (lines.length > 1) {
             console.log(_.rest(lines).map(function (line) {
-              return _.padRight(' ', padding) + line;
+              return _.padEnd(' ', padding) + line;
             }).join('\n'));
           }
         } else {

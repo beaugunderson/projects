@@ -35,10 +35,10 @@ storage.setup(function () {
           colorFn = theme.red;
         } else if (status.type) {
           if (status.staged) {
-            letter = _.padRight(status.type, 2);
+            letter = _.padEnd(status.type, 2);
             colorFn = theme.yellow;
           } else {
-            letter = _.padLeft(status.type, 2);
+            letter = _.padStart(status.type, 2);
 
             if (status.type === 'M') {
               colorFn = theme.green;
