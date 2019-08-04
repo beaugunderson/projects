@@ -10,7 +10,7 @@ var split = require('split');
 var storage = require('../lib/storage.js');
 var utilities = require('../lib/utilities.js');
 
-utilities.programDefaultsParse('git-unpushed');
+var program = utilities.programDefaultsParse('git-unpushed');
 
 storage.setup(function () {
   var projects = storage.allWithDirectory();
@@ -36,7 +36,10 @@ storage.setup(function () {
       }
 
       if (commits) {
-        console.log('%s: %d commits ahead of origin', project.name, commits);
+        console.log('%s %s commit%s ahead of origin',
+          program.theme.bad(project.name),
+          program.theme.secondary(commits),
+          utilities.pluralize(commits));
       }
     });
   });
