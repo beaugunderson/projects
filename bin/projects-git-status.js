@@ -48,8 +48,17 @@ storage.setup(function () {
           }
         }
 
-        console.log(letter, utilities.colorizePath(path.join(project.directory,
-          file), colorFn));
+        var processedFile = file.replace(/"/g, '');
+
+        processedFile = path.join(project.directory, processedFile);
+        processedFile = utilities.colorizePath(processedFile, colorFn);
+
+        if (processedFile.indexOf(' ') !== -1) {
+          processedFile = processedFile.replace(/ /g, '\\ ');
+          processedFile = processedFile.replace('\\ ->\\ ', ' -> ');
+        }
+
+        console.log(letter, processedFile);
       });
 
       cbEach(err);
