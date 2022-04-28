@@ -43,7 +43,7 @@
     "url": "https://github.com/beaugunderson/projects/issues"
   },
   "dependencies": {
-    "async": "~2.1.4",
+    "async": "~2.6.4",
     "cardinal": "~1.0.0",
     "commander": "~2.9.0",
     "debug": "^2.6.9",
